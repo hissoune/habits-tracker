@@ -5,12 +5,13 @@ import { AuthInterface } from "../interfaces/auth.interface";
 import { JwtService } from '@nestjs/jwt';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { comparPassword, hashPassword } from '../helpers/password.helper';
+import { MailerService } from '@nestjs-modules/mailer';
 
 export class AuthImplementation implements AuthInterface {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
     private readonly jwtService: JwtService,
-    // private readonly mailService: MailerService
+    private readonly mailService: MailerService
 
   ) {}
 
@@ -51,7 +52,7 @@ export class AuthImplementation implements AuthInterface {
 
           if (!user) throw new UnauthorizedException('User not found');
           
-          return { email: user.email };
+          return {id:user._id, email: user.email ,role:user.role };
         } catch (error) {
           throw new UnauthorizedException('Token validation failed');
         }
@@ -62,24 +63,24 @@ export class AuthImplementation implements AuthInterface {
     if (!user) {
       throw new UnauthorizedException('User with this email does not exist');
     }
-    // await this.mailService.sendMail({
-    //   from: 'Kingsley Okure <kingsleyokgeorge@gmail.com>',
-    //   to: user.email,
-    //   subject: `App connected`,
-    //   text: `hellow someone got you `,
-    // });
+    await this.mailService.sendMail({
+      from: 'Kingsley Okure <kingsleyokgeorge@gmail.com>',
+      to: user.email,
+      subject: `App connected`,
+      text: `hellow someone got you `,
+    });
 
-    // const resetToken = this.jwtService.sign(
-    //   { id: user._id, email: user.email },
-    //   { secret: process.env.JWT_SECRET, expiresIn: '1h' }
-    // );
+    const resetToken = this.jwtService.sign(
+      { id: user._id, email: user.email },
+      { secret: process.env.JWT_SECRET, expiresIn: '1h' }
+    );
 
-    // await this.mailService.sendMail({
-    //   from: 'Kingsley Okure <kingsleyokgeorge@gmail.com>',
-    //   to: user.email,
-    //   subject: 'Password Reset Request',
-    //   text: `Forgot your password? Use this token to reset it: ${resetToken}. If you didn't request a password reset, please ignore this email.`,
-    // });
+    await this.mailService.sendMail({
+      from: 'Kingsley Okure <kingsleyokgeorge@gmail.com>',
+      to: user.email,
+      subject: 'Password Reset Request',
+      text: `Forgot your password? Use this token to reset it: ${resetToken}. If you didn't request a password reset, please ignore this email.`,
+    });
 
     return { email: user.email };
   }
