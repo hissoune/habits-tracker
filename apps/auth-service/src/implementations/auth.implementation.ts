@@ -22,21 +22,20 @@ export class AuthImplementation implements AuthInterface {
     return createdUser.save();
   }
 
-  async login(userEntity: User): Promise<{ token: string }> {
+  async login(userEntity: {email:string,password:string}): Promise<{ token: string }> {
+
     const user = await this.userModel.findOne({ email: userEntity.email });
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
     
+    const isPasswordValid = await comparPassword(user.password, userEntity.password);
 
-
-    const isPasswordValid = await comparPassword(user.password, userEntity.password)
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-  
-    const token = this.jwtService.sign({  name: user.name, email: user.email });
+    const token =  this.jwtService.sign({ name: user.name, email: user.email ,role:user.role });
 
    
     return { token };
