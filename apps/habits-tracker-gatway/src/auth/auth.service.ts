@@ -14,4 +14,9 @@ export class AuthService {
         return this.authClient.send('login', data)
 
     }
+
+    forgotPassword(email:string){
+        return this.authClient.send('forgotpassword', email)
+
+    }
 }
