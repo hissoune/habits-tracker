@@ -54,7 +54,7 @@ export class AuthImplementation implements AuthInterface {
           
           return {id:user._id, email: user.email ,role:user.role };
         } catch (error) {
-          throw new UnauthorizedException('Token validation failed');
+          return new UnauthorizedException('Token validation failed');
         }
       }
 
