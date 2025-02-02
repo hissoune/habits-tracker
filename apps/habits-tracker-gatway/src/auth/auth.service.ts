@@ -9,4 +9,9 @@ export class AuthService {
     register(data){
         return this.authClient.send('register', data)
     }
+
+    login(data){
+        return this.authClient.send('login', data)
+
+    }
 }
