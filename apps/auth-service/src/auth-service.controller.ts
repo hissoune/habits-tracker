@@ -13,4 +13,10 @@ export class AuthServiceController {
    
    return this.authServiceService.register(data)
   }
+
+  @MessagePattern('login')
+  login(@Payload() data:User) {
+   
+   return this.authServiceService.login(data)
+  }
 }
