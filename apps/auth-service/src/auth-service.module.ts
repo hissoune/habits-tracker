@@ -28,7 +28,7 @@ import { AuthImplementation } from './implementations/auth.implementation';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('app.jwtsecret'), 
+        secret: configService.get<string>('app.jwtSecret'), 
         signOptions: { expiresIn: '1000h' },
       })
     }),
