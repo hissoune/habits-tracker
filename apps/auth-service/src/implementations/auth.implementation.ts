@@ -60,6 +60,7 @@ export class AuthImplementation implements AuthInterface {
 
   async forgotPassword(email: string): Promise<{ email: string }> {
     const user = await this.userModel.findOne({ email });
+    
     if (!user) {
       throw new UnauthorizedException('User with this email does not exist');
     }
