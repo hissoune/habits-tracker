@@ -36,16 +36,13 @@ import { MailerModule } from '@nestjs-modules/mailer';
     }),
     MailerModule.forRoot({
       transport: {
-        host: process.env.SMTP_HOST,
-        port: +process.env.SMTP_PORT,
-        secure: false,
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, 
         auth: {
           user: process.env.APP_EMAIL,
-          pass: process.env.APP_EMAIL_PASS,
+          pass: process.env.APP_EMAIL_PASS, 
         },
-      },
-      defaults: {
-        from: `"${process.env.APP_EMAIL_USERNAME}" <${process.env.APP_EMAIL}>`,
       },
     }),
   ],

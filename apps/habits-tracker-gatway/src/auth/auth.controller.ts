@@ -13,4 +13,9 @@ export class AuthController {
   login(@Body() body){
     return this.authService.login(body)
    }
+   @Post('forgotpassword')
+   forgotPassword(@Body() body){
+    const {email} = body
+    return this.authService.forgotPassword(email);
+   }
 }

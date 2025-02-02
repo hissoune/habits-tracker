@@ -20,4 +20,9 @@ login(data:{email:string,password:string}){
 verifyToken(token:string){
   return this.authImplimentations.verifyToken(token)
 }
+
+forgotPassword( email:string){
+  return this.authImplimentations.forgotPassword(email)
+
+  }
 }
