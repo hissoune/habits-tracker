@@ -6,7 +6,7 @@ export class AuthService {
 
     constructor(@Inject("AUTH_SERVICE") private readonly authClient:ClientProxy  ){}
 
-    register(data:{email: string, password: string, displayName?: string}){
+    register(data){
         return this.authClient.send('register', data)
     }
 }
