@@ -16,4 +16,8 @@ register(data:User){
 login(data:{email:string,password:string}){
     return this.authImplimentations.login(data)
 }
+
+verifyToken(token:string){
+  return this.authImplimentations.verifyToken(token)
+}
 }

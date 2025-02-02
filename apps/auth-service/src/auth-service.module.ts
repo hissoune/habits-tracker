@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserModelSchema } from './schemas/user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthImplementation } from './implementations/auth.implementation';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -31,6 +32,21 @@ import { AuthImplementation } from './implementations/auth.implementation';
         secret: configService.get<string>('app.jwtSecret'), 
         signOptions: { expiresIn: '1000h' },
       })
+      
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.SMTP_HOST,
+        port: +process.env.SMTP_PORT,
+        secure: false,
+        auth: {
+          user: process.env.APP_EMAIL,
+          pass: process.env.APP_EMAIL_PASS,
+        },
+      },
+      defaults: {
+        from: `"${process.env.APP_EMAIL_USERNAME}" <${process.env.APP_EMAIL}>`,
+      },
     }),
   ],
   controllers: [AuthServiceController],
