@@ -24,4 +24,9 @@ export class AuthServiceController {
   verifyToken(@Payload() token:string){
    return this.authServiceService.verifyToken(token)
   }
+
+  @MessagePattern('forgotpassword')
+  forgotPassword(@Payload() email:string){
+return this.authServiceService.forgotPassword(email)
+  }
 }
