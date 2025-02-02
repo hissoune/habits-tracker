@@ -12,4 +12,8 @@ register(data:User){
    return this.authImplimentations.register(data)
 }
   
+
+login(data:{email:string,password:string}){
+    return this.authImplimentations.login(data)
+}
 }
