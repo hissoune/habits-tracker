@@ -88,7 +88,7 @@ export class AuthImplementation implements AuthInterface {
 
   async resetPassword(resetToken: string, newPassword: string): Promise<{ message: string }> {
     try {
-      const decoded = this.jwtService.verify(resetToken, { secret: process.env.JWT_SECRET });
+      const decoded = this.jwtService.verify(resetToken);
       const user = await this.userModel.findById(decoded.id);
 
       if (!user) {

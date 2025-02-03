@@ -27,6 +27,11 @@ export class AuthServiceController {
 
   @MessagePattern('forgotpassword')
   forgotPassword(@Payload() email:string){
-return this.authServiceService.forgotPassword(email)
+   return this.authServiceService.forgotPassword(email)
+  }
+
+  @MessagePattern('resetpassword')
+  resetPassword(@Payload() data:{resetToken:string,newPassword:string}){
+    return this.authServiceService.resetPassword(data)
   }
 }
