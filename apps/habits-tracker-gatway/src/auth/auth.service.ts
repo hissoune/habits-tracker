@@ -19,4 +19,9 @@ export class AuthService {
         return this.authClient.send('forgotpassword', email)
 
     }
+
+    resetPassword(data:{resetToken:string,newPassword:string}){
+        return this.authClient.send('resetpassword', data)
+
+    }
 }
