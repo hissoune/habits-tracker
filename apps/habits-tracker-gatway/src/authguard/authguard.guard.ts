@@ -14,15 +14,18 @@ export class AuthguardGuard implements CanActivate {
   ): Promise<boolean> {
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const token = this.extractToken(request);
-
+   
     if (!token) {
       throw new UnauthorizedException('Token not found');
     }
 
     try {
       const user = await firstValueFrom(this.authClient.send('verify', token));      
+     
+      
       if (user) {
         request.user = user;
+        
        return true
 
       }else{
