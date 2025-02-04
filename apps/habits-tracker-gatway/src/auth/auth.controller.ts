@@ -1,5 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { User } from '../../../auth-service/src/schemas/user.schema';
+import { AuthguardGuard } from '../authguard/authguard.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -10,7 +12,8 @@ export class AuthController {
    return this.authService.register(body)
   }
   @Post('login')
-  login(@Body() body){
+  login(@Body() body:{email:string,password:string}){
+    
     return this.authService.login(body)
    }
    @Post('forgotpassword')
@@ -21,5 +24,12 @@ export class AuthController {
    @Post('resetpassword')
    resetPassword(@Body() body:{resetToken:string,newPassword:string}){
       return this.authService.resetPassword(body)
+   }
+
+   @Get('verify')
+   @UseGuards(AuthguardGuard)
+   verifyToken(@Request() req){ 
+    
+    return  req.user;
    }
 }
