@@ -14,6 +14,6 @@ export class HabitsController {
 
   geteAllHabits(@Req() req){
     
-    return req.user
+    return  req.user
   }
 }
