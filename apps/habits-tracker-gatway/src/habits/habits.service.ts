@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { Habit } from 'apps/types';
 
 @Injectable()
 export class HabitsService {
@@ -14,7 +15,8 @@ export class HabitsService {
         return this.habitsClient.send('get_habit', { id });
     }
 
-    create(data) {
+    create(data:Habit) {
+        
         return this.habitsClient.send('create_habit', data);
     }
 
