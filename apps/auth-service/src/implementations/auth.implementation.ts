@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { comparPassword, hashPassword } from '../helpers/password.helper';
 import { MailerService } from '@nestjs-modules/mailer';
+import { log } from 'console';
 
 export class AuthImplementation implements AuthInterface {
   constructor(
@@ -20,16 +21,20 @@ export class AuthImplementation implements AuthInterface {
     userEntity.password = await hashPassword(userEntity.password);
 
     const createdUser = new this.userModel(userEntity);
+ 
+    
     return createdUser.save();
   }
 
-  async login(userEntity: {email:string,password:string}): Promise<{ token: string }> {
+  async login(userEntity: {email:string,password:string}): Promise<{ token: string ,user:User}> {
+  console.log(userEntity);
   
     const user = await this.userModel.findOne({ email: userEntity.email });
     
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
+    
     
     const isPasswordValid = await comparPassword(user.password, userEntity.password);
        
@@ -39,8 +44,9 @@ export class AuthImplementation implements AuthInterface {
 
     const token =  this.jwtService.sign({ name: user.name, email: user.email ,role:user.role });
 
-   
-    return { token };
+  
+     
+    return { token,user};
   }
 
     async verifyToken(token: string) {
