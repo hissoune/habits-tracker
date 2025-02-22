@@ -4,7 +4,8 @@ import { HabitsServiceService } from './habits-service.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import  habitConfig  from './config/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import {  HabitModel, HabitSchema } from './schemas/habit.schema';
+import {  Habit, HabitSchema } from './schemas/habit.schema';
+import { HabitImplementations } from './implimentations/habit.implimentations';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import {  HabitModel, HabitSchema } from './schemas/habit.schema';
           isGlobal: true,
           load: [habitConfig], 
         }),
-        MongooseModule.forFeature([{ name: HabitModel.name, schema: HabitSchema }]),
+        MongooseModule.forFeature([{ name: Habit.name, schema: HabitSchema }]),
     
         MongooseModule.forRootAsync({
           imports: [ConfigModule],
@@ -24,6 +25,6 @@ import {  HabitModel, HabitSchema } from './schemas/habit.schema';
         }),
   ],
   controllers: [HabitsServiceController],
-  providers: [HabitsServiceService],
+  providers: [HabitsServiceService,HabitImplementations],
 })
 export class HabitsServiceModule {}
