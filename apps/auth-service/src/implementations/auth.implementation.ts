@@ -6,7 +6,6 @@ import { JwtService } from '@nestjs/jwt';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { comparPassword, hashPassword } from '../helpers/password.helper';
 import { MailerService } from '@nestjs-modules/mailer';
-import { log } from 'console';
 
 export class AuthImplementation implements AuthInterface {
   constructor(
