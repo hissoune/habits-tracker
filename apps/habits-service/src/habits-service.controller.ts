@@ -7,9 +7,11 @@ import { Habit } from './schemas/habit.schema';
 export class HabitsServiceController {
   constructor(private readonly habitsServiceService: HabitsServiceService) {}
 
-  @MessagePattern("createHabit")
-  createHabit(@Payload() data:Habit): string {
-    return this.habitsServiceService.getHello();
+  @MessagePattern("create_habit")
+  createHabit(@Payload() data:Habit) {
+  console.log(data);
+  
+    return this.habitsServiceService.createHabit(data);
   }
 }
 // @MessagePattern("getHabits")
