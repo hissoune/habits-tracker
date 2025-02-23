@@ -6,6 +6,8 @@ import  habitConfig  from './config/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import {  Habit, HabitSchema } from './schemas/habit.schema';
 import { HabitImplementations } from './implimentations/habit.implimentations';
+import { ScheduleModule } from '@nestjs/schedule';
+import { HabitProgress, HabitProgressSchema } from './habitsProgress/habitProgress.schema';
 
 @Module({
   imports: [
@@ -13,7 +15,7 @@ import { HabitImplementations } from './implimentations/habit.implimentations';
           isGlobal: true,
           load: [habitConfig], 
         }),
-        MongooseModule.forFeature([{ name: Habit.name, schema: HabitSchema }]),
+        MongooseModule.forFeature([{ name: Habit.name, schema: HabitSchema },{ name: HabitProgress.name, schema: HabitProgressSchema }]),
     
         MongooseModule.forRootAsync({
           imports: [ConfigModule],
@@ -23,6 +25,7 @@ import { HabitImplementations } from './implimentations/habit.implimentations';
            
           }),
         }),
+        ScheduleModule.forRoot(),
   ],
   controllers: [HabitsServiceController],
   providers: [HabitsServiceService,HabitImplementations],
