@@ -34,6 +34,9 @@ export class Habit extends Document {
     @Prop({ required: true, default: 0 })
     progress: number;
 
+    @Prop({required:true})
+    repeats:number;
+
     @Prop({ type: String, enum: Status, default: Status.Active, required: true })
     status: Status;
 }
