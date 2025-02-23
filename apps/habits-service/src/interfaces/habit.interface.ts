@@ -1,3 +1,4 @@
+import { HabitProgress } from "../habitsProgress/habitProgress.schema";
 import { Habit } from "../schemas/habit.schema";
 
 
@@ -7,4 +8,8 @@ export interface HabitInterface {
     updateHabit(id: string, habit: Partial<Habit>): Promise<Habit | null>;
     deleteHabit(id: string): Promise<boolean>;
     getAllHabits(): Promise<Habit[]>;
+    getHabitsByFrequency(frequency: string):Promise<Habit[]>
+    getProgress(habitId: string, userId: string): Promise<HabitProgress | null> 
+    createProgress(habitId: string, userId: string, streak: number): Promise<HabitProgress> 
+    updateProgress(habitId: string, userId: string): Promise<HabitProgress | null>
 }
