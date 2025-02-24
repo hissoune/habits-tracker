@@ -12,7 +12,12 @@ export class HabitProgressService {
         return this.habitProgressimlimentatin.compleeteProgress(id,userId)
     }
     async getProgress(habitId: string, userId: string): Promise<HabitProgress | null>{
-  return this.habitProgressimlimentatin.getProgress(habitId, userId)
+       
+        
+       return   this.habitProgressimlimentatin.getProgress(habitId, userId);
+     
+        
+        
     }
 
     async createProgress(habitId: string, userId: string, streak: number): Promise<HabitProgress> {

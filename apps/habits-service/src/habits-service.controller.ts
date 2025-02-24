@@ -18,6 +18,11 @@ export class HabitsServiceController {
       
       return this.habitsServiceService.getHabits(data.userId);
     }
+
+    @MessagePattern("get_habit")
+    getHabitById(@Payload() data: any) {
+    return this.habitsServiceService.getHabitById(data.id);
+  }
     // @MessagePattern('compleetProgress')
     // compleeteProgress(@Payload() data:{id:string,userId:string}){
     //     return this.habitProgressService.compleeteProgress(data.id,data.userId)
@@ -40,13 +45,12 @@ export class HabitsServiceController {
     console.log('Updating monthly habit progress...');
     await this.habitsServiceService.updateProgressByFrequency('monthly');
   }
+
+
 }
 
 
-// @MessagePattern("getHabitById")
-// getHabitById(id: string)g {
-//   return this.habitsServiceService.getHabitById(id);
-// }
+
 
 // @MessagePattern("updateHabit")
 // updateHabit(data: { id: string, habit: any }): string {

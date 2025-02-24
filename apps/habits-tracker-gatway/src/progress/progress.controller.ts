@@ -19,9 +19,12 @@ export class ProgressController {
     return this.progressService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.progressService.findOne(+id);
+  @Get('/:habitId')
+  findOne(@Request() req,@Param('habitId') habitId: string) {
+    
+    const userId = req.user.id
+    
+    return this.progressService.findOne(habitId,userId);
   }
 
   @Patch('compleet/:id')

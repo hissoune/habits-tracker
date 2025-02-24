@@ -8,6 +8,6 @@ export interface HabitInterface {
     updateHabit(id: string, habit: Partial<Habit>): Promise<Habit | null>;
     deleteHabit(id: string): Promise<boolean>;
     getAllHabits(userId:string): Promise<Habit[]>;
-    getHabitsByFrequency(frequency: string):Promise<Habit[]>
+    getHabitsByFrequency(frequency: string):Promise<Habit[]>;
 
 }

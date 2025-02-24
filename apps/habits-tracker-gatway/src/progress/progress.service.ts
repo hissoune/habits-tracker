@@ -14,8 +14,8 @@ export class ProgressService {
     return `This action returns all progress`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} progress`;
+  findOne(habitId: string,userId:string) {
+    return this.habitsClient.send('getProgress', {habitId,userId})
   }
 
   update(id:string,userId:string) {
