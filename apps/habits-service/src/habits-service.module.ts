@@ -7,7 +7,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import {  Habit, HabitSchema } from './schemas/habit.schema';
 import { HabitImplementations } from './implimentations/habit.implimentations';
 import { ScheduleModule } from '@nestjs/schedule';
-import { HabitProgress, HabitProgressSchema } from './habitsProgress/habitProgress.schema';
+import { HabitProgress, HabitProgressSchema } from './habitsProgress/schemas/habitProgress.schema';
+import { habitProgressModule } from './habitsProgress/habitProgress.module';
+import { HabitProgressService } from './habitsProgress/habitProgress.service';
+import { HabitProgressImplimentation } from './habitsProgress/implimentations/habitProgress.implimentation';
 
 @Module({
   imports: [
@@ -26,8 +29,9 @@ import { HabitProgress, HabitProgressSchema } from './habitsProgress/habitProgre
           }),
         }),
         ScheduleModule.forRoot(),
+        habitProgressModule
   ],
   controllers: [HabitsServiceController],
-  providers: [HabitsServiceService,HabitImplementations],
+  providers: [HabitsServiceService,HabitImplementations,HabitProgressService,HabitProgressImplimentation],
 })
 export class HabitsServiceModule {}
