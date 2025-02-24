@@ -11,8 +11,12 @@ export class HabitsController {
   constructor(private readonly habitsService: HabitsService) {}
 
   @Get('all')
-    getAllHabits() {
-    return this.habitsService.getAll();
+    getAllHabits(@Request() req) {
+      const user = req.user
+    const userId = user.id
+    
+    
+    return this.habitsService.getAll(userId);
   }
 
   @Get(':id')

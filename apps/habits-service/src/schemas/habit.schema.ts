@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import mongoose, { Document, Schema as MongooseSchema } from 'mongoose';
 
 export enum Frequency {
     Daily = 'daily',
@@ -16,8 +16,8 @@ export enum Status {
 @Schema({ timestamps: true })
 export class Habit extends Document {
 
-    @Prop({ type: MongooseSchema.Types.ObjectId, required: true, ref: 'User' })
-    userId: MongooseSchema.Types.ObjectId;
+     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+     userId: string;
 
     @Prop({ required: true })
     title: string;
@@ -31,7 +31,13 @@ export class Habit extends Document {
     @Prop()
     reminderTime?: Date;
 
-    @Prop({ required: true, default: 0 })
+    @Prop({required: true,default:0})
+    sucsess:number;
+
+    @Prop({required: true,default:0})
+    fails:number;
+
+    @Prop({ required: true, default:0 })
     progress: number;
 
     @Prop({required:true})

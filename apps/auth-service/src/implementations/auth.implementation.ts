@@ -26,7 +26,6 @@ export class AuthImplementation implements AuthInterface {
   }
 
   async login(userEntity: {email:string,password:string}): Promise<{ token: string ,user:User}> {
-  console.log(userEntity);
   
     const user = await this.userModel.findOne({ email: userEntity.email });
     

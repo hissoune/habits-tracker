@@ -7,8 +7,8 @@ export class HabitsService {
     constructor(@Inject("HABITS_SERVICE") private readonly habitsClient:ClientProxy  ){}
 
 
-    getAll() {
-        return this.habitsClient.send('get_all_habits', {});
+    getAll(userId:any) {
+        return this.habitsClient.send('get_all_habits', {userId});
     }
 
     getOne(id: string) {
