@@ -5,6 +5,7 @@ import { HabitsModule } from './habits/habits.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthguardGuard } from './authguard/authguard.guard';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ProgressModule } from './progress/progress.module';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       }
     ]),
     
-    HabitsModule, AuthModule],
+    HabitsModule, AuthModule, ProgressModule],
   controllers: [AppController],
   providers: [AppService,AuthguardGuard],
 })
