@@ -17,7 +17,9 @@ export class HabitsServiceService {
   }
 
   
-
+  async getHabitById(id:string){
+   return this.habitsImplimentations.getHabitById(id)
+  }
 
 
    async updateProgressByFrequency(frequency: string) {
@@ -39,9 +41,6 @@ export class HabitsServiceService {
     }
   }
 
+  
 
-  // @Cron(CronExpression.EVERY_5_SECONDS,{ name: 'habitCronJob' })
-  // handleCron() {
-  //  console.log('Called when the current second is 45');
-  // }
 }
