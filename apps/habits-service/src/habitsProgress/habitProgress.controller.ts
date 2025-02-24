@@ -16,6 +16,11 @@ export class HabitProgressController {
          
         return this.habitProgressService.compleeteProgress(data.id,data.userId)
     }
+
+    @MessagePattern('getProgress')
+    getProgress(@Payload() data:{habitId:string,userId:string}){
+   return  this.habitProgressService.getProgress(data.habitId, data.userId)
+    }
    
 
 }
