@@ -15,8 +15,10 @@ export class HabitProgressImplimentation implements HabitProgressInterface
         @InjectModel(HabitProgress.name) private readonly habitProgressModel:Model<HabitProgress>){}
 
 
-    getProgress(habitId: string, userId: string): Promise<HabitProgress | null> {
-        return this.habitProgressModel.findOne({ habitId, userId });
+    async getProgress(habitId: string, userId: string): Promise<HabitProgress | null> {
+        const progress = await this.habitProgressModel.findOne({ habitId, userId });
+        
+        return progress
     }
    async compleeteProgress(id:string,userId:string){
         const progress = await this.habitProgressModel.findById(id);
