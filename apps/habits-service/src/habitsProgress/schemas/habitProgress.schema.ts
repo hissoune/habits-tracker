@@ -16,6 +16,9 @@ export class HabitProgress extends Document {
 
   @Prop({ required: true, default: false })
   status: boolean;
+  @Prop({required:true,enum:['active',"expired"],default:'active'})
+  progressStatus:string
+
 
   @Prop({ default: 0 })
   streak: number; 
