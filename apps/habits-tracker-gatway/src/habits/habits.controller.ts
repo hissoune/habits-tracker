@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Req, Request, UseGuards } from '@nestjs/common';
 import { HabitsService } from './habits.service';
 import { AuthguardGuard } from '../authguard/authguard.guard';
 
@@ -34,6 +34,10 @@ export class HabitsController {
   @Put(':id')
   updateHabit(@Param('id') id: string, @Body() updateHabitDto: UpdateHabitDto) {
     return this.habitsService.update(id, updateHabitDto);
+  }
+  @Patch('/:habitId')
+  reactiveHabit(@Param('habitId') habitId: string) {
+    return this.habitsService.reactiveHabit(habitId);
   }
 
   @Delete(':id')
