@@ -23,6 +23,10 @@ export class HabitsService {
     update(id: string, data) {
         return this.habitsClient.send('update_habit', { id, ...data });
     }
+    reactiveHabit(id: string){
+        return this.habitsClient.send('reactive_habit', { id });
+
+    }
 
     delete(id: string) {
         return this.habitsClient.send('delete_habit', { id });
