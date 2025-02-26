@@ -23,10 +23,10 @@ export class HabitsServiceController {
     getHabitById(@Payload() data: any) {
     return this.habitsServiceService.getHabitById(data.id);
   }
-    // @MessagePattern('compleetProgress')
-    // compleeteProgress(@Payload() data:{id:string,userId:string}){
-    //     return this.habitProgressService.compleeteProgress(data.id,data.userId)
-    // }
+    @MessagePattern('reactive_habit')
+    reactiveHabit(@Payload() data:{id:string}){
+        return this.habitsServiceService.reactiveHabit(data.id)
+    }
 
     @Cron(CronExpression.EVERY_10_SECONDS, { name: 'dailyHabitProgress' })
   async handleDailyHabits() {
