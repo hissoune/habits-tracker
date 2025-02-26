@@ -20,16 +20,31 @@ export class HabitsServiceService {
   async getHabitById(id:string){
    return this.habitsImplimentations.getHabitById(id)
   }
-
+  async reactiveHabit(id:string){
+    return this.habitsImplimentations.reactiveHabit(id)
+  }
 
    async updateProgressByFrequency(frequency: string) {
     const habits: Habit[] = await this.habitsImplimentations.getHabitsByFrequency(frequency);
 
     for (const habit of habits) {
+
+      if (habit.status === 'completed' || habit.status === 'failed') {
+        console.log(`Habit ${habit.title} is already ${habit.status}. Skipping update...`);
+        return null;
+    }
       const userId = habit.userId;
 
-      let progress = await this.habitProgressService.getProgress(habit._id as unknown as string, userId as unknown as string);
-
+      const progress = await this.habitProgressService.getProgress(habit._id as unknown as string, userId as unknown as string);
+      // const curentDate = new Date();
+      //    switch(frequency){
+         
+      //     case 'daily':
+      //       if (habit.reminderTime <= curentDate + Date.D) {
+              
+      //       }
+      //       break;
+      //    }
       if (!progress) {
         await this.habitProgressService.createProgress(habit._id as unknown as string, userId as unknown as string, 1);
         console.log(`Progress created for habit: ${habit.title} (${frequency})`);
