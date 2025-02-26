@@ -11,6 +11,7 @@ export class HabitImplementations implements HabitInterface {
         @InjectModel(Habit.name) private readonly habitModel:Model<Habit>,
         @InjectModel(HabitProgress.name) private readonly habitProgressModel:Model<HabitProgress>
          ) { }
+    
 
 
 
@@ -26,6 +27,11 @@ export class HabitImplementations implements HabitInterface {
 
     async updateHabit(id: string, habit: Partial<Habit>): Promise<Habit | null> {
        return this.habitModel.findByIdAndUpdate(id, habit)
+    }
+
+    reactiveHabit(id: string): Promise<Habit | null> {
+        return this.habitModel.findByIdAndUpdate(id, {$set:{sucsess:0,fails:0,progress:0,status:"active"}},{new:true});
+
     }
 
     async deleteHabit(id: string): Promise<boolean> {
