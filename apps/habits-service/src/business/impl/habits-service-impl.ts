@@ -29,9 +29,9 @@ export class HabitsServiceImpl implements HabitsService {
        return this.habitModel.findByIdAndUpdate(id, habit)
     }
 
-    reactiveHabit(id: string): Promise<Habit | null> {
-        return this.habitModel.findByIdAndUpdate(id, {$set:{sucsess:0,fails:0,progress:0,status:"active"}},{new:true});
-
+   async reactiveHabit(id: string): Promise<Habit | null> {
+        const habit =  await this.habitModel.findByIdAndUpdate(id, {$set:{sucsess:0,fails:0,progress:0,status:"active"}},{new:true});
+          return habit
     }
 
     async deleteHabit(id: string): Promise<boolean> {
