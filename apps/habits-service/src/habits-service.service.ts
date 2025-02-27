@@ -21,7 +21,7 @@ export class HabitsServiceService {
    return this.habitsImplimentations.getHabitById(id)
   }
   async reactiveHabit(id:string){
-    return this.habitsImplimentations.reactiveHabit(id)
+    return await this.habitsImplimentations.reactiveHabit(id)
   }
 
    async updateProgressByFrequency(frequency: string) {
@@ -36,15 +36,6 @@ export class HabitsServiceService {
       const userId = habit.userId;
 
       const progress = await this.habitProgressService.getProgress(habit._id as unknown as string, userId as unknown as string);
-      // const curentDate = new Date();
-      //    switch(frequency){
-         
-      //     case 'daily':
-      //       if (habit.reminderTime <= curentDate + Date.D) {
-              
-      //       }
-      //       break;
-      //    }
       if (!progress) {
         await this.habitProgressService.createProgress(habit._id as unknown as string, userId as unknown as string, 1);
         console.log(`Progress created for habit: ${habit.title} (${frequency})`);
