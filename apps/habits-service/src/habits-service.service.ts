@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { HabitImplementations } from './implimentations/habit.implimentations';
+import { HabitsServiceImpl } from './business/impl/habits-service-impl';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Habit } from './schemas/habit.schema';
 import { HabitProgressService } from './habitsProgress/habitProgress.service';
@@ -7,7 +7,7 @@ import { HabitProgressService } from './habitsProgress/habitProgress.service';
 @Injectable()
 export class HabitsServiceService {
  
-    constructor(private readonly habitsImplimentations: HabitImplementations,private readonly habitProgressService:HabitProgressService) {}
+    constructor(private readonly habitsImplimentations: HabitsServiceImpl,private readonly habitProgressService:HabitProgressService) {}
   
   createHabit(habit) {
     return this.habitsImplimentations.createHabit(habit);
