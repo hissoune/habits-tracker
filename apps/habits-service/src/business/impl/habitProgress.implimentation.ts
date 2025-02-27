@@ -61,7 +61,7 @@ export class HabitProgressImplimentation implements HabitProgressInterface
         
     }
 
-    async updateProgress(habitId: string, userId: string): Promise<HabitProgress | null> {
+    async updateProgress(habitId: string, userId: string): Promise<{ progress: HabitProgress, habit: Habit } | null> {
         try {
             const habit = await this.habitModel.findById(habitId);
             if (!habit) {
@@ -99,7 +99,7 @@ export class HabitProgressImplimentation implements HabitProgressInterface
             await habit.save();
             await progress.save();
     
-            return progress;
+            return {progress,habit};
         } catch (error) {
             console.error('Error updating progress:', error);
             return null;

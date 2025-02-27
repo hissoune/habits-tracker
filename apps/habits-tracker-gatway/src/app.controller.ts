@@ -22,6 +22,7 @@ export class AppController {
     if (!serviceUrl) {
       return res.status(500).json({ error: `Service ${serviceName} not found` });
     }
+    
     try {
       const response = await axios({
         method: req.method,
@@ -29,7 +30,7 @@ export class AppController {
         data: req.body,
         headers: req.headers,
       });
-
+   
       res.status(response.status).json(response.data);
     } catch (error) {
       res.status(error.response?.status || 500).json(error.response?.data || { error: 'Internal Server Error' });
