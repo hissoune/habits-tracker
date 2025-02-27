@@ -6,6 +6,7 @@ import { Habit, HabitSchema } from '../schemas/habit.schema';
 import { HabitProgress, HabitProgressSchema } from '../schemas/habitProgress.schema';
 import { HabitProgressImplimentation } from '../business/impl/habitProgress.implimentation';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { HabitsGateway } from '../gateway/habits.gateway';
 
 
 
@@ -33,7 +34,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     controllers: [
         HabitProgressController
     ],
-    providers:[HabitProgressService,HabitProgressImplimentation],
+    providers:[HabitProgressService,HabitProgressImplimentation,HabitsGateway],
 
 })
 
