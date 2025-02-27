@@ -28,4 +28,6 @@ forgotPassword( email:string){
    resetPassword( data:{resetToken:string,newPassword:string}){
       return this.authImplimentations.resetPassword(data.resetToken, data.newPassword)
     }
+
+  
 }

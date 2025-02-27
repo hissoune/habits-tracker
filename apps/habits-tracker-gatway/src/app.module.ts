@@ -1,11 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { HabitsModule } from './habits/habits.module';
-import { AuthModule } from './auth/auth.module';
-import { AuthguardGuard } from './authguard/authguard.guard';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { ProgressModule } from './progress/progress.module';
 
 @Module({
   imports: [
@@ -23,8 +19,8 @@ import { ProgressModule } from './progress/progress.module';
       }
     ]),
     
-    HabitsModule, AuthModule, ProgressModule],
+     ],
   controllers: [AppController],
-  providers: [AppService,AuthguardGuard],
+  providers: [AppService],
 })
 export class AppModule {}

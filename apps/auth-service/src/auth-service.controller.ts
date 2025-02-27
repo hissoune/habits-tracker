@@ -1,37 +1,46 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AuthServiceService } from './auth-service.service';
 import { Date } from 'mongoose';
 import { User } from './schemas/user.schema';
+import { AuthguardGuard } from './authguard/authguard.guard';
 
-@Controller()
+@Controller('auth')
 export class AuthServiceController {
-  constructor(private readonly authServiceService: AuthServiceService) {}
-
-  @MessagePattern('register')
-  register(@Payload() data:User) {
-   
-   return this.authServiceService.register(data)
+  constructor(private readonly authService: AuthServiceService) {}
+  @Get('health')
+    checkHealth() {
+    return 'UP'
   }
 
-  @MessagePattern('login')
-  login(@Payload() data:User) {
-   
-   return this.authServiceService.login(data)
-  }
+   @Post('register')
+   register(@Body() body){
+    return this.authService.register(body)
+   }
+   @Post('login')
+   login(@Body() body:{email:string,password:string}){
+     
+     return this.authService.login(body)
+    }
+    @Post('forgotpassword')
+    forgotPassword(@Body() body:{email:string}){
+     return this.authService.forgotPassword(body.email);
+    }
+ 
+    @Post('resetpassword')
+    resetPassword(@Body() body:{resetToken:string,newPassword:string}){
+       return this.authService.resetPassword(body)
+    }
 
-  @MessagePattern('verify')
-  verifyToken(@Payload() token:string){
-   return this.authServiceService.verifyToken(token)
-  }
+    @Get('verify')
+       @UseGuards(AuthguardGuard)
+       verifyTokenforClient(@Req() req){ 
+        
+        return  req.user;
+       }
 
-  @MessagePattern('forgotpassword')
-  forgotPassword(@Payload() email:string){
-   return this.authServiceService.forgotPassword(email)
-  }
-
-  @MessagePattern('resetpassword')
-  resetPassword(@Payload() data:{resetToken:string,newPassword:string}){
-    return this.authServiceService.resetPassword(data)
-  }
+       @MessagePattern('verify')
+       verifyToken(@Payload() token:string){        
+        return this.authService.verifyToken(token)
+       }
 }

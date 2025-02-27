@@ -1,16 +1,17 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { HabitInterface } from '../interfaces/habit.interface';
-import {  Habit } from '../schemas/habit.schema';
+import { HabitsService } from '../habits-service';
+import {  Habit } from '../../schemas/habit.schema';
 import mongoose, { Model } from 'mongoose';
-import { HabitProgress } from '../habitsProgress/schemas/habitProgress.schema';
+import { HabitProgress } from '../../schemas/habitProgress.schema';
 
-export class HabitImplementations implements HabitInterface {
+export class HabitsServiceImpl implements HabitsService {
   
 
     constructor(
         @InjectModel(Habit.name) private readonly habitModel:Model<Habit>,
         @InjectModel(HabitProgress.name) private readonly habitProgressModel:Model<HabitProgress>
          ) { }
+    
 
 
 
@@ -26,6 +27,11 @@ export class HabitImplementations implements HabitInterface {
 
     async updateHabit(id: string, habit: Partial<Habit>): Promise<Habit | null> {
        return this.habitModel.findByIdAndUpdate(id, habit)
+    }
+
+    reactiveHabit(id: string): Promise<Habit | null> {
+        return this.habitModel.findByIdAndUpdate(id, {$set:{sucsess:0,fails:0,progress:0,status:"active"}},{new:true});
+
     }
 
     async deleteHabit(id: string): Promise<boolean> {

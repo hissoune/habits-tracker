@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { Frequency, Habit, Status } from '../../../../types';
+import { Frequency, Habit, Status } from '../../types';
 export class CreateHabitDto implements Habit {
     userId?: Schema.Types.ObjectId;
     startDate: Date;
