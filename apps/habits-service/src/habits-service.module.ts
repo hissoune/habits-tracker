@@ -12,6 +12,7 @@ import { HabitProgressService } from './habitsProgress/habitProgress.service';
 import { HabitProgressImplimentation } from './business/impl/habitProgress.implimentation';
 import { HabitsServiceImpl } from './business/impl/habits-service-impl';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { HabitsGateway } from './gateway/habits.gateway';
 
 @Module({
   imports: [
@@ -45,9 +46,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
                 }
               }
             ]),
+            
 
   ],
   controllers: [HabitsController],
-  providers: [HabitsServiceService,HabitsServiceImpl,HabitProgressService,HabitProgressImplimentation],
+  providers: [HabitsServiceService,HabitsServiceImpl,HabitProgressService,HabitProgressImplimentation,HabitsGateway],
 })
 export class HabitsServiceModule {}
