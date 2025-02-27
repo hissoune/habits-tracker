@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { HabitProgressImplimentation } from "./implimentations/habitProgress.implimentation";
-import { HabitProgress } from "./schemas/habitProgress.schema";
+import { HabitProgressImplimentation } from "../business/impl/habitProgress.implimentation";
+import { HabitProgress } from "../schemas/habitProgress.schema";
 
 @Injectable()
 export class HabitProgressService {
