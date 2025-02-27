@@ -44,9 +44,15 @@ export class HabitsController {
     // }
 
     @Patch('/:habitId')
-    reactiveHabit(@Param('habitId') habitId: string) {
-      return this.habitsService.reactiveHabit(habitId);
+   async reactiveHabit(@Param('habitId') habitId: string) {
+      
+      
+      const habit =  await this.habitsService.reactiveHabit(habitId);
+      
+      return  habit
+      
     }
+
     @Cron(CronExpression.EVERY_10_SECONDS, { name: 'dailyHabitProgress' })
     async handleDailyHabits() {
       console.log('Updating daily habit progress...');
