@@ -8,7 +8,8 @@ import { AuthguardGuard } from './authguard/authguard.guard';
 @Controller('auth')
 export class AuthServiceController {
   constructor(private readonly authService: AuthServiceService) {}
-  @Get('health')
+
+  @Get('/health')
     checkHealth() {
     return 'UP'
   }
