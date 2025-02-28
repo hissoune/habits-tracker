@@ -29,7 +29,7 @@ async function bootstrap() {
     address: 'localhost',
     port: port,
     check: {
-      http: `http://127.0.0.1:3002/auth/health`, 
+      http: `http://localhost:3002/auth/health`, 
       interval: '10s',  
       timeout: '5s',
     },
