@@ -22,7 +22,6 @@ export class AppController {
     if (!serviceUrl) {
       return res.status(500).json({ error: `Service ${serviceName} not found` });
     }   
-    console.log(req.method,req.body,req.headers);
      
     try {
       const response = await axios({
