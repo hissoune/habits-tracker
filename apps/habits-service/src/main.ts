@@ -6,16 +6,17 @@ import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 async function bootstrap() {
     const app = await NestFactory.create(HabitsServiceModule);
   
-  // const app = await NestFactory.createMicroservice<MicroserviceOptions>(HabitsServiceModule, {
-  //   transport: Transport.RMQ,
-  //   options: {
-  //     urls: ["amqp://localhost:5672/"],
-  //     queue: 'habit_queue',
-  //     queueOptions: {
-  //       durable: false,
-  //     },
-  //   },
-  // });
+  const microcervice = await NestFactory.createMicroservice<MicroserviceOptions>(HabitsServiceModule, {
+    transport: Transport.RMQ,
+    options: {
+      urls: ["amqp://localhost:5672/"],
+      queue: 'habit_queue',
+      queueOptions: {
+        durable: false,
+      },
+    },
+  });
+await microcervice.listen();
 
   const consul = new Consul();
   const serviceName = 'habits-service';
