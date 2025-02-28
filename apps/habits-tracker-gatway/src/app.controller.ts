@@ -21,14 +21,18 @@ export class AppController {
 
     if (!serviceUrl) {
       return res.status(500).json({ error: `Service ${serviceName} not found` });
-    }
-    
+    }   
+    console.log(req.method,req.body,req.headers);
+     
     try {
       const response = await axios({
         method: req.method,
         url: `${serviceUrl}/${path.join('/')}`,
         data: req.body,
-        headers: req.headers,
+        headers: {
+          'Content-Type': req.headers['content-type'] || 'application/json',
+          'Authorization': req.headers['authorization'] || ''
+      },
       });
    
       res.status(response.status).json(response.data);
@@ -38,8 +42,5 @@ export class AppController {
   }
 
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+ 
 }
