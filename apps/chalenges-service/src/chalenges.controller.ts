@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { ChalengesService } from './chalenges.service';
 import { CreateChalengeDto } from './dto/create-chalenge.dto';
 import { AuthguardGuard } from './authguard/authguard.guard';
@@ -27,5 +27,10 @@ export class ChalengesController {
   updateChalenge(@Req() req,@Param('id') id,@Body() chalenge:UpdateChalengeDto){
     chalenge.creator = req.user.id
     return this.chalengesService.updateChalenge(id, chalenge)
+  }
+  @Delete('/:id')
+  @UseGuards(AuthguardGuard)
+  deleteChalenge(@Req() req,@Param('id') id){
+    
   }
 }
