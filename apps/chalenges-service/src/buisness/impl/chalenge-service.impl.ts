@@ -12,7 +12,20 @@ export class ChalengeServiceImplimentation implements chalengeService {
         @InjectModel(Challenge.name) private readonly challengeModel: Model<Challenge>
     ) {}
     
+    async getAllChalenges(): Promise<Challenge[]> {
 
+        return await this.challengeModel.find({ startDate: { $gt: new Date() } });
+    
+    
+    }
+
+    async getChalengeById(id:string): Promise<Challenge> {
+        return await this.challengeModel.findById(id)
+    }
+
+    async getChalengeByCreator(userId:string): Promise<Challenge[]>{
+        return this.challengeModel.find({ startDate: { $gt: new Date() },creator:userId })
+    }
     async createChalenge(chalenge: CreateChalengeDto): Promise<Challenge> {
         const createdChallenge = new this.challengeModel(chalenge);
         return createdChallenge.save();
@@ -36,6 +49,16 @@ export class ChalengeServiceImplimentation implements chalengeService {
         }    
          
         return await this.challengeModel.findByIdAndUpdate(id, chalenge, { new: true }).exec();
+    }
+    async deleteChalenge(id: string, userId: string): Promise<Challenge> {
+        const chalenge = await this.challengeModel.findById(id)
+        if (chalenge.creator != userId) {
+            throw new UnauthorizedException('this chalenge is not yours')
+        }
+
+        chalenge.deleteOne()
+        return chalenge.save()
+       
     }
 }
 
