@@ -15,6 +15,6 @@ async function bootstrap() {
   });
   console.log(`✅ Registered ${serviceName} in Consul`);
 
-  await app.listen(process.env.PORT ?? port);
+  await app.listen( port);
 }
 bootstrap();

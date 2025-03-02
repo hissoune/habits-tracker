@@ -28,10 +28,10 @@ export class AppController {
         method: req.method,
         url: `${serviceUrl}/${path.join('/')}`,
         data: req.body,
-        headers: {
-          'Content-Type': req.headers['content-type'] || 'application/json',
-          'Authorization': req.headers['authorization'] || ''
-      },
+       headers: {
+        'Content-Type': req.headers['content-type'] || 'application/json',
+        'Authorization': req.headers['authorization'] || ''
+    },
       });
    
       res.status(response.status).json(response.data);

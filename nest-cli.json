@@ -37,13 +37,13 @@
         "tsConfigPath": "apps/auth-service/tsconfig.app.json"
       }
     },
-    "chalenges": {
+    "chalenges-service": {
       "type": "application",
-      "root": "apps/chalenges",
+      "root": "apps/chalenges-service",
       "entryFile": "main",
-      "sourceRoot": "apps/chalenges/src",
+      "sourceRoot": "apps/chalenges-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/chalenges/tsconfig.app.json"
+        "tsConfigPath": "apps/chalenges-service/tsconfig.app.json"
       }
     }
   }
