@@ -13,6 +13,11 @@ export class ChalengesController {
     return 'UP';
   }
 
+  @Get()
+   getAllChalenges(){
+    return this.chalengesService.getAllChalenges()
+   }
+   
   @Post()
   @UseGuards(AuthguardGuard)
   createChalenge(@Req() req, @Body() chalenge:CreateChalengeDto){
