@@ -11,9 +11,12 @@ export class Progress extends Document{
     @Prop({required:true})
     chalengeId:string;
 
-    @Prop({enum:['active','completed','expired']})
+    @Prop({enum:['active','expired'],default:'active'})
     status:string;
 
+    @Prop({default:false})
+    isDone:boolean;
+    
     @Prop({ default: 0 })
     streak: number;
     
