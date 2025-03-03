@@ -3,6 +3,7 @@ import { ChalengesService } from './chalenges.service';
 import { CreateChalengeDto } from './dto/create-chalenge.dto';
 import { AuthguardGuard } from './authguard/authguard.guard';
 import { UpdateChalengeDto } from './dto/update-chalenge.dto';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Controller('chalenges')
 export class ChalengesController {
@@ -17,7 +18,7 @@ export class ChalengesController {
    getAllChalenges(){
     return this.chalengesService.getAllChalenges()
    }
-   
+
   @Post()
   @UseGuards(AuthguardGuard)
   createChalenge(@Req() req, @Body() chalenge:CreateChalengeDto){
@@ -38,4 +39,9 @@ export class ChalengesController {
   deleteChalenge(@Req() req,@Param('id') id){
     
   }
+
+  @Cron(CronExpression.EVERY_10_SECONDS, { name: 'dailychalengeProgress' })
+    async handleDailychalenges() {
+      console.log('Updating daily chalenge progress...');
+    }
 }
