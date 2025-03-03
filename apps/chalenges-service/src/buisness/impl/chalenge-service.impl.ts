@@ -13,10 +13,7 @@ export class ChalengeServiceImplimentation implements chalengeService {
     ) {}
     
     async getAllChalenges(): Promise<Challenge[]> {
-
         return await this.challengeModel.find({ startDate: { $gt: new Date() } });
-    
-    
     }
 
     async getChalengeById(id:string): Promise<Challenge> {
@@ -26,6 +23,15 @@ export class ChalengeServiceImplimentation implements chalengeService {
     async getChalengeByCreator(userId:string): Promise<Challenge[]>{
         return this.challengeModel.find({ startDate: { $gt: new Date() },creator:userId })
     }
+
+    async getChalengesByFrequency(frequency:string): Promise<Challenge[]>{
+        const currentDate = Date.now()
+       const challenges = await this.challengeModel.find({startDate: { $lte: currentDate },
+        endDate: { $gte: currentDate },frequency:frequency});
+        return challenges
+    }
+
+
     async createChalenge(chalenge: CreateChalengeDto): Promise<Challenge> {
         const createdChallenge = new this.challengeModel(chalenge);
         return createdChallenge.save();
