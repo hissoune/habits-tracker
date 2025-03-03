@@ -8,6 +8,7 @@ import chalengeConfig from './config/config'
 import { MongooseModule } from '@nestjs/mongoose';
 import { Challenge, ChallengeSchema } from './schemas/chalenge.schema';
 import { ChalengeServiceImplimentation } from './buisness/impl/chalenge-service.impl';
+import { ProgressModule } from './chalengesProgress/progress.module';
 @Module({
 
   imports: [
@@ -41,6 +42,7 @@ import { ChalengeServiceImplimentation } from './buisness/impl/chalenge-service.
                     }
                   }
                 ]),
+                ProgressModule
 
   ],
   controllers: [ChalengesController],
