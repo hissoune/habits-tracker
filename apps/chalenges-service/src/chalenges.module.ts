@@ -9,6 +9,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Challenge, ChallengeSchema } from './schemas/chalenge.schema';
 import { ChalengeServiceImplimentation } from './buisness/impl/chalenge-service.impl';
 import { ProgressModule } from './chalengesProgress/progress.module';
+import { CronService } from './cronJobs/cron.service';
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
 
   imports: [
@@ -28,6 +30,7 @@ import { ProgressModule } from './chalengesProgress/progress.module';
               
               }),
             }),
+            ScheduleModule.forRoot(),
 
     ClientsModule.register([
                   {
@@ -46,6 +49,6 @@ import { ProgressModule } from './chalengesProgress/progress.module';
 
   ],
   controllers: [ChalengesController],
-  providers: [ChalengesService,AuthguardGuard,ChalengeServiceImplimentation],
+  providers: [ChalengesService,AuthguardGuard,ChalengeServiceImplimentation,CronService],
 })
 export class ChalengesModule {}
