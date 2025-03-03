@@ -24,7 +24,7 @@ export class ChalengeServiceImplimentation implements chalengeService {
         return this.challengeModel.find({ startDate: { $gt: new Date() },creator:userId })
     }
 
-    async getChalengesByFrequency(frequency:string): Promise<Challenge[]>{
+    async updateChalengesProgressByFrequency(frequency:string): Promise<Challenge[]>{
         const currentDate = Date.now()
        const challenges = await this.challengeModel.find({startDate: { $lte: currentDate },
         endDate: { $gte: currentDate },frequency:frequency});
