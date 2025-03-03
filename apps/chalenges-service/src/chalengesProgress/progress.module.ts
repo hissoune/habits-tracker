@@ -5,6 +5,8 @@ import { AuthguardGuard } from "../authguard/authguard.guard";
 import { ConfigModule } from "@nestjs/config";
 import chalengeConfig from '../config/config'
 import { ClientsModule, Transport } from "@nestjs/microservices";
+import { MongooseModule } from "@nestjs/mongoose";
+import { Progress, progressSchema } from "../schemas/progress.schema";
 
 
 @Module({
@@ -13,6 +15,8 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
               isGlobal: true,
               load: [chalengeConfig], 
             }),
+                MongooseModule.forFeature([{ name: Progress.name, schema: progressSchema }]),
+            
             ClientsModule.register([
                               {
                                 name:"AUTH_SERVICE",
