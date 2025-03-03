@@ -13,6 +13,7 @@ import { HabitProgressImplimentation } from './business/impl/habitProgress.impli
 import { HabitsServiceImpl } from './business/impl/habits-service-impl';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { HabitsGateway } from './gateway/habits.gateway';
+import { CronService } from './cronJobs/cron.service';
 
 @Module({
   imports: [
@@ -50,6 +51,6 @@ import { HabitsGateway } from './gateway/habits.gateway';
 
   ],
   controllers: [HabitsController],
-  providers: [HabitsServiceService,HabitsServiceImpl,HabitProgressService,HabitProgressImplimentation,HabitsGateway],
+  providers: [HabitsServiceService,HabitsServiceImpl,HabitProgressService,HabitProgressImplimentation,HabitsGateway,CronService],
 })
 export class HabitsServiceModule {}
