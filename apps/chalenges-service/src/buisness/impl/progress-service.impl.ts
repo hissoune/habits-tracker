@@ -18,6 +18,12 @@ export class chalengeProgressImpl implements progressService {
       return newProgress.save();
     }
 
+    async getProgressForChalenge (userId: string, chalengeId: string): Promise<Progress>{
+        const progress = await  this.ProgressModel.findOne({userId:userId,chalengeId:chalengeId,status:'active'});
+        return progress;
+
+    } 
+
     async completeProgress(id: string, userId: string): Promise<Progress> {
       const progress = await this.ProgressModel.findById(id);
       if (progress.userId != userId) {
