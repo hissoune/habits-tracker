@@ -27,4 +27,7 @@ export class ChalengesService {
   deleteChalenge(id:string,userId:string){
     return this.chalengeServiceImplimentation.deleteChalenge(id, userId)
   }
+ async getChalengesByFrequency(frequency:string):Promise<Challenge[]>{
+    return await this.chalengeServiceImplimentation.getChalengesByFrequency(frequency)
+  }
 }
