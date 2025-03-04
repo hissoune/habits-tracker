@@ -8,6 +8,9 @@ export class AppController {
 
   constructor(private readonly appService: AppService) {}
 
+  getHello(){
+   return 'Hello World!'
+  }
   async getServiceAddress(serviceName: string): Promise<string | null> {
     const services = await this.consul.agent.service.list();
     const service = Object.values(services).find((s: any) => s.Service === serviceName) as { Address: string, Port: number } | undefined;
