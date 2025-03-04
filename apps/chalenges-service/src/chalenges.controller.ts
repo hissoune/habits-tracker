@@ -40,8 +40,5 @@ export class ChalengesController {
     
   }
 
-  @Cron(CronExpression.EVERY_10_SECONDS, { name: 'dailychalengeProgress' })
-    async handleDailychalenges() {
-      console.log('Updating daily chalenge progress...');
-    }
+  
 }
