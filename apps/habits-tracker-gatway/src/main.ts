@@ -7,7 +7,11 @@ async function bootstrap() {
   const consul = new Consul();
   const serviceName = 'gateway-service';
   const port = 5000; 
-
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
+    credentials: true,
+  });
   await consul.agent.service.register({
     name: serviceName,
     address: 'localhost',

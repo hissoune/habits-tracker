@@ -20,6 +20,24 @@ export class ChalengeServiceImplimentation implements chalengeService {
         return await this.challengeModel.findById(id)
     }
 
+    async joinChalenge(id:string,userId:string): Promise<Challenge>{
+      
+        const chalenge = await this.challengeModel.findById(id);
+        if (!chalenge) {
+            throw new UnauthorizedException('uou cant ')
+        }
+
+        const participant = chalenge.participants.find(participant => participant.userId === userId);
+        if (participant) {
+            throw new UnauthorizedException('You are allredy a participant of this challenge');
+        }
+
+        chalenge.participants.push({userId:userId,progress:0});
+
+        return  chalenge.save();
+
+    }
+
     async getChalengeByCreator(userId:string): Promise<Challenge[]>{
         return this.challengeModel.find({ startDate: { $gt: new Date() },creator:userId })
     }

@@ -3,7 +3,6 @@ import { ChalengesService } from './chalenges.service';
 import { CreateChalengeDto } from './dto/create-chalenge.dto';
 import { AuthguardGuard } from './authguard/authguard.guard';
 import { UpdateChalengeDto } from './dto/update-chalenge.dto';
-import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Controller('chalenges')
 export class ChalengesController {
@@ -34,6 +33,14 @@ export class ChalengesController {
     chalenge.creator = req.user.id
     return this.chalengesService.updateChalenge(id, chalenge)
   }
+
+  @Patch('join-chalenge/:id')
+  @UseGuards(AuthguardGuard)
+  joinChalenge(@Req() req,@Param('id') id:string){
+   const userId = req.user.id;
+   return this.chalengesService.joinChalenge(id, userId)
+  }
+
   @Delete('/:id')
   @UseGuards(AuthguardGuard)
   deleteChalenge(@Req() req,@Param('id') id){

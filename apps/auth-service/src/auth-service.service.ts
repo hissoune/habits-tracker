@@ -11,7 +11,17 @@ export class AuthServiceService {
 register(data:User){
    return this.authImplimentations.register(data)
 }
+
+getUsersByIds(ids:string[]){
+  return this.authImplimentations.getUsersByIds(ids)
+}
+
+getUserById(userId:string){
+  console.log(userId);
   
+  return this.authImplimentations.getUserById(userId)
+
+}
 
 login(data:{email:string,password:string}){
     return this.authImplimentations.login(data)
