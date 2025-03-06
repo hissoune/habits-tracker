@@ -40,8 +40,23 @@ export class AuthServiceController {
         return  req.user;
        }
 
-       @MessagePattern('verify')
-       verifyToken(@Payload() token:string){        
-        return this.authService.verifyToken(token)
-       }
+    @MessagePattern('verify')
+    verifyToken(@Payload() token:string){ 
+
+      return this.authService.verifyToken(token)
+
+      }
+    @MessagePattern('get-users')
+    getUserByIds(@Payload() data){
+   
+      
+      return this.authService.getUsersByIds(data)
+    }
+
+    @MessagePattern('get-creator')
+    getUserById(@Payload() data){
+   
+      
+      return this.authService.getUserById(data)
+    }
 }
