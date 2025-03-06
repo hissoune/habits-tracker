@@ -25,6 +25,18 @@ export class AuthImplementation implements AuthInterface {
     return createdUser.save();
   }
 
+  async getUsersByIds(ids:string[]): Promise<User[]>{
+    
+    const users = await this.userModel.find({ _id: { $in: ids } }).exec();
+    
+    return users
+  }
+
+  async getUserById(userId:string): Promise<User>{
+    const user= this.userModel.findById(userId);
+    return user;
+  }
+
   async login(userEntity: {email:string,password:string}): Promise<{ token: string ,user:User}> {
   
     const user = await this.userModel.findOne({ email: userEntity.email });
