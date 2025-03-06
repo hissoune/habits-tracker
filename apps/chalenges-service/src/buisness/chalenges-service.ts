@@ -6,6 +6,7 @@ import { Challenge } from "../schemas/chalenge.schema";
 export interface chalengeService {
     getAllChalenges():Promise<Challenge[]>;
     getChalengeById(id:string):Promise<Challenge>;
+    joinChalenge(id:string,userId):Promise<Challenge>;
     getChalengeByCreator(userId:string):Promise<Challenge[]>;
     updateChalengesProgressByFrequency(freauency:string): Promise<Challenge[]>;
     createChalenge(chalenge:CreateChalengeDto):Promise<Challenge>;
