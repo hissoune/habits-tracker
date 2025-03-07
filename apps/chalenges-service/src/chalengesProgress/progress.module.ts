@@ -7,6 +7,8 @@ import chalengeConfig from '../config/config'
 import { ClientsModule, Transport } from "@nestjs/microservices";
 import { MongooseModule } from "@nestjs/mongoose";
 import { Progress, progressSchema } from "../schemas/progress.schema";
+import { chalengeProgressImpl } from "../buisness/impl/progress-service.impl";
+import { Challenge, ChallengeSchema } from "../schemas/chalenge.schema";
 
 
 @Module({
@@ -15,7 +17,7 @@ import { Progress, progressSchema } from "../schemas/progress.schema";
               isGlobal: true,
               load: [chalengeConfig], 
             }),
-                MongooseModule.forFeature([{ name: Progress.name, schema: progressSchema }]),
+                MongooseModule.forFeature([{ name: Progress.name, schema: progressSchema },{ name: Challenge.name, schema: ChallengeSchema }]),
             
             ClientsModule.register([
                               {
@@ -35,7 +37,10 @@ import { Progress, progressSchema } from "../schemas/progress.schema";
         ProgressController
     ],
     providers: [
-        ProgressService,AuthguardGuard
+        ProgressService,AuthguardGuard,chalengeProgressImpl
+    ],
+    exports: [
+      ProgressService
     ],
 })
 export class ProgressModule {}
