@@ -9,6 +9,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { Progress, progressSchema } from "../schemas/progress.schema";
 import { chalengeProgressImpl } from "../buisness/impl/progress-service.impl";
 import { Challenge, ChallengeSchema } from "../schemas/chalenge.schema";
+import { chalengesGateway } from "../gateway/chalenges.gateway";
 
 
 @Module({
@@ -37,7 +38,7 @@ import { Challenge, ChallengeSchema } from "../schemas/chalenge.schema";
         ProgressController
     ],
     providers: [
-        ProgressService,AuthguardGuard,chalengeProgressImpl
+        ProgressService,AuthguardGuard,chalengeProgressImpl,chalengesGateway
     ],
     exports: [
       ProgressService
