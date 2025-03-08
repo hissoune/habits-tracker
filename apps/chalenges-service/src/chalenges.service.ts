@@ -90,8 +90,12 @@ export class ChalengesService {
         const progress = await  this.progressService.getParticipantProgress(challenge._id as string, participant.userId as string);
 
         if (!progress) {
-          await this.progressService.createProgress(challenge._id as string, participant.userId as string)
+          await this.progressService.createProgress( participant.userId as string,challenge._id as string)
+          console.log(`Progress created for challenge: ${challenge.title} (${frequency})`);
+
         }else {
+          await this.progressService.updateProgress( participant.userId as string,challenge._id as string);
+         console.log(`Progress update for challenge: ${challenge.title} (${frequency})`);
 
         }
       }
