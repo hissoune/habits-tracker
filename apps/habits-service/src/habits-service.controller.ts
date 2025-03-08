@@ -32,6 +32,8 @@ export class HabitsController {
   @UseGuards(AuthguardGuard)
   createHabit(@Req() req, @Body() createHabitDto: CreateHabitDto) {
     const user = req.user
+   
+    
     createHabitDto.userId = user.id
     return this.habitsService.createHabit(createHabitDto);
   }
