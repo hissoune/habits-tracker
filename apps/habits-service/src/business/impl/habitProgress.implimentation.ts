@@ -17,6 +17,11 @@ export class HabitProgressImplimentation implements HabitProgressInterface
 
 
     async getProgress(habitId: string, userId: string): Promise<HabitProgress | null> {
+        const habit = await this.habitModel.findById(habitId);
+
+        if (habit.status == "completed" ||habit.status == "failed" ) {
+            throw new UnauthorizedException('the habit is completed')
+        }
         const progress = await this.habitProgressModel.findOne({ habitId, userId ,progressStatus:'active'});
         
         return progress
