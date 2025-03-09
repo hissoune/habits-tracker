@@ -7,7 +7,7 @@ import { Cron, CronExpression } from "@nestjs/schedule";
 export class CronService {
 constructor(private readonly chalengeService:ChalengesService){}
 
-@Cron(CronExpression.EVERY_10_SECONDS, { name: 'dailychalengeProgress' })
+@Cron(CronExpression.EVERY_30_SECONDS, { name: 'dailychalengeProgress' })
   async handleDailyHabits() {
     console.log('Updating daily chalenge progress...');
     await this.chalengeService.updateChalengesProgressByFrequency('daily');
