@@ -9,7 +9,7 @@ export class chalengesGateway {
   @WebSocketServer()
   server: Server;
 
-  emitchalengeUpdate(data:{progress?:Progress,chalenge?:Challenge}) {
+  emitchalengeUpdate(data:Challenge) {
  
     
     this.server.emit('chalengeUpdated', data);

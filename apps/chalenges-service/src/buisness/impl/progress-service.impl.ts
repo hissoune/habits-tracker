@@ -36,19 +36,20 @@ export class chalengeProgressImpl implements progressService {
 
     }
 
-    async updateProgress(userId: string, chalengeId: string): Promise<{ progress: Progress, chalenge: Challenge }> {
+    async updateProgress(userId: string, chalengeId: string): Promise<Challenge> {
         const progress = await  this.ProgressModel.findOne({userId:userId,chalengeId:chalengeId,status:'active'});
         const chalenge = await this.chalengeModel.findById(chalengeId);
         if (progress.isDone   ) {
           if (progress.streak < chalenge.repeats) {
             progress.streak += 1;
-            progress.isDone = false
+            
             const participantProgress = Math.round(((progress.streak / chalenge.repeats) * 100 || 0))|| 0;
             const participantIndex = chalenge.participants.findIndex(p => p.userId === userId);
             if (participantIndex !== -1) {
                 chalenge.participants[participantIndex].progress = participantProgress;
             }
           }
+          progress.isDone = false
           
 
          }else {
@@ -57,7 +58,7 @@ export class chalengeProgressImpl implements progressService {
         await progress.save();
         await chalenge.save();
 
-        return {progress,chalenge}
+        return chalenge
     }
 }
    

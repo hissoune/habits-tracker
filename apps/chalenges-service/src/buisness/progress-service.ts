@@ -8,5 +8,5 @@ export interface progressService {
     createProgress(userId:string,chalengeId:string):Promise<Progress>;
     getProgressForChalenge(userId:string,chalengeId:string):Promise<Progress>;
     completeProgress(id:string,userId:string):Promise<Progress>;
-    updateProgress(userId:string,chalengeId:string):Promise<{ progress: Progress, chalenge: Challenge }>
+    updateProgress(userId:string,chalengeId:string):Promise<Challenge>
 }

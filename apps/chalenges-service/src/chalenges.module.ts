@@ -11,6 +11,7 @@ import { ChalengeServiceImplimentation } from './buisness/impl/chalenge-service.
 import { ProgressModule } from './chalengesProgress/progress.module';
 import { CronService } from './cronJobs/cron.service';
 import { ScheduleModule } from '@nestjs/schedule';
+import { chalengesGateway } from './gateway/chalenges.gateway';
 @Module({
 
   imports: [
@@ -49,6 +50,6 @@ import { ScheduleModule } from '@nestjs/schedule';
 
   ],
   controllers: [ChalengesController],
-  providers: [ChalengesService,AuthguardGuard,ChalengeServiceImplimentation,CronService],
+  providers: [ChalengesService,AuthguardGuard,ChalengeServiceImplimentation,CronService,chalengesGateway],
 })
 export class ChalengesModule {}

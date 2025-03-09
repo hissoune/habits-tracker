@@ -38,7 +38,7 @@ import { chalengesGateway } from "../gateway/chalenges.gateway";
         ProgressController
     ],
     providers: [
-        ProgressService,AuthguardGuard,chalengeProgressImpl,chalengesGateway
+        ProgressService,AuthguardGuard,chalengeProgressImpl
     ],
     exports: [
       ProgressService
