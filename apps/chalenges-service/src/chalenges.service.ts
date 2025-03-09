@@ -5,11 +5,12 @@ import { CreateChalengeDto } from './dto/create-chalenge.dto';
 import { UpdateChalengeDto } from './dto/update-chalenge.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import { ProgressService } from './chalengesProgress/progress.service';
+import { chalengesGateway } from './gateway/chalenges.gateway';
 
 
 @Injectable()
 export class ChalengesService {
-  constructor(private readonly chalengeServiceImplimentation:ChalengeServiceImplimentation,private readonly progressService:ProgressService,@Inject("AUTH_SERVICE") private readonly authClient:ClientProxy){}
+  constructor(private readonly chalengeServiceImplimentation:ChalengeServiceImplimentation,private readonly progressService:ProgressService,@Inject("AUTH_SERVICE") private readonly authClient:ClientProxy,private readonly chalengeGateway:chalengesGateway){}
 
   async getCreatrorAndParticipants(challenge:any){
     let chalenge = challenge.toObject()
@@ -86,18 +87,22 @@ export class ChalengesService {
     if (challenge.participants && challenge.participants.length >0) {
       
       for(const  participant of challenge.participants){
+        if (participant.progress < 100) {
+          const progress = await  this.progressService.getParticipantProgress(challenge._id as string, participant.userId as string);
 
-        const progress = await  this.progressService.getParticipantProgress(challenge._id as string, participant.userId as string);
-
-        if (!progress) {
-          await this.progressService.createProgress( participant.userId as string,challenge._id as string)
-          console.log(`Progress created for challenge: ${challenge.title} (${frequency})`);
-
-        }else {
-          await this.progressService.updateProgress( participant.userId as string,challenge._id as string);
-         console.log(`Progress update for challenge: ${challenge.title} (${frequency})`);
-
+          if (!progress) {
+            await this.progressService.createProgress( participant.userId as string,challenge._id as string)
+            console.log(`Progress created for challenge: ${challenge.title} (${frequency})`);
+  
+          }else {
+          const data =   await this.progressService.updateProgress( participant.userId as string,challenge._id as string);
+          const chalenge = await this.getCreatrorAndParticipants(data)
+         await this.chalengeGateway.emitchalengeUpdate(chalenge)
+           console.log(`Progress update for challenge: ${challenge.title} (${frequency})`);
+  
+          }
         }
+    
       }
     }
 
