@@ -27,6 +27,11 @@ login(data:{email:string,password:string}){
     return this.authImplimentations.login(data)
 }
 
+getAllUsers(id:string){
+  return this.authImplimentations.getUsers(id)
+
+}
+
 verifyToken(token:string){
   return this.authImplimentations.verifyToken(token)
 }
