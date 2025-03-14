@@ -38,6 +38,7 @@ export class AuthImplementation implements AuthInterface {
   }
 
   async login(userEntity: {email:string,password:string}): Promise<{ token: string ,user:User}> {
+  console.log('dfkjskkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkmdf',userEntity);
   
     const user = await this.userModel.findOne({ email: userEntity.email });
     
@@ -45,6 +46,7 @@ export class AuthImplementation implements AuthInterface {
       throw new UnauthorizedException('Invalid credentials');
     }
     
+    console.log(user);
     
     const isPasswordValid = await comparPassword(user.password, userEntity.password);
        
@@ -74,6 +76,22 @@ export class AuthImplementation implements AuthInterface {
           return new UnauthorizedException('Token validation failed');
         }
       }
+
+
+  async getUsers(id: string): Promise<Partial<User>[]> {
+    const user = await this.userModel.findById(id);
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const users = await this.userModel.find({ 
+      _id: { $ne: id }, 
+      role: 'client' 
+    }).select('-password -role').exec();
+
+    return users;
+  }
 
   async forgotPassword(email: string): Promise<{ email: string }> {
     const user = await this.userModel.findOne({ email });
