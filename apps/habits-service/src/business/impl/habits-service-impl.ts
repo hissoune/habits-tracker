@@ -41,6 +41,10 @@ export class HabitsServiceImpl implements HabitsService {
     async getAllHabits(userId:string): Promise<Habit[]> {
         return this.habitModel.find({userId})
     }
+
+    async getAllHabitsForAdmin(): Promise<Habit[]>{
+    return this.habitModel.find()
+    }
     
     async getHabitsByFrequency(frequency: string): Promise<Habit[]> {
         return this.habitModel.find({ frequency ,status:'active' });
