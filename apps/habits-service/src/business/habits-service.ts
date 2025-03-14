@@ -8,6 +8,7 @@ export interface HabitsService {
     reactiveHabit(id:string): Promise<Habit | null>;
     deleteHabit(id: string): Promise<boolean>;
     getAllHabits(userId:string): Promise<Habit[]>;
+    getAllHabitsForAdmin(): Promise<Habit[]>;
     getHabitsByFrequency(frequency: string):Promise<Habit[]>;
 
 }

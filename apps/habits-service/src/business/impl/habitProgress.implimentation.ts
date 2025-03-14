@@ -83,7 +83,7 @@ export class HabitProgressImplimentation implements HabitProgressInterface
             if (progress.status) {
                 habit.sucsess += 1;
                 habit.fails = 0;
-                habit.progress = (habit.sucsess) / habit.repeats;
+                habit.progress = Math.round(((habit.sucsess / habit.repeats) * 100 || 0))|| 0;
                 progress.streak += 1;
             } else {
                 habit.fails += 1;

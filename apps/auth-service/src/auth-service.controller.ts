@@ -40,6 +40,13 @@ export class AuthServiceController {
         return  req.user;
        }
 
+    @Get('all_users')
+    @UseGuards(AuthguardGuard)
+    getAllUsers(@Req() req){
+      const id = req.user.id 
+   return this.authService.getAllUsers(id)
+    }
+
     @MessagePattern('verify')
     verifyToken(@Payload() token:string){ 
 

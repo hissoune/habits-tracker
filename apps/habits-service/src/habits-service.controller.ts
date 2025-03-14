@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Patch, Post, Put, Req, UseGuards } from '
 import { HabitsServiceService } from './habits-service.service';
 import { AuthguardGuard } from './authguard/authguard.guard';
 import { CreateHabitDto } from './dto/create-habit.dto';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Roles } from './authguard/roles.decorator';
 
 @Controller('habits')
 export class HabitsController {
@@ -20,6 +20,13 @@ export class HabitsController {
     const user = req.user
     const userId = user.id
     return this.habitsService.getHabits(userId);
+  }
+
+  @Get('/all_for_admin')
+  @UseGuards(AuthguardGuard)
+  @Roles('admin')
+  getAllHabitsForAdmin(){
+      return this.habitsService.getAllHabitsForAdmin()
   }
 
   @Get(':id')

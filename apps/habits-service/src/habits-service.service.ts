@@ -1,17 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { HabitsServiceImpl } from './business/impl/habits-service-impl';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Habit } from './schemas/habit.schema';
 import { HabitProgressService } from './habitsProgress/habitProgress.service';
+import { ClientProxy } from '@nestjs/microservices';
+import { asapScheduler } from 'rxjs';
 
 @Injectable()
 export class HabitsServiceService {
  
-    constructor(private readonly habitsImplimentations: HabitsServiceImpl,private readonly habitProgressService:HabitProgressService) {}
+    constructor(private readonly habitsImplimentations: HabitsServiceImpl,private readonly habitProgressService:HabitProgressService,@Inject("AUTH_SERVICE") private readonly authClient:ClientProxy) {}
   
+  async getHabitCreator (habit:Habit){
+    const creator = await this.authClient.send('get-creator', habit.userId).toPromise();
+      habit.userId = creator;
+      return habit
+  }   
+
   createHabit(habit) {
     return this.habitsImplimentations.createHabit(habit);
   }
+async getAllHabitsForAdmin() {
+    const habits = await this.habitsImplimentations.getAllHabitsForAdmin();
+    
+    const plainHabits = habits.map(habit => habit.toObject()); 
+
+  await Promise.all(plainHabits.map(async (habit) => {
+    await this.getHabitCreator(habit);
+  }));
+
+  return plainHabits;
+}
   getHabits(userId:string){
     return this.habitsImplimentations.getAllHabits(userId);
   }
