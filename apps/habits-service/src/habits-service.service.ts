@@ -17,12 +17,13 @@ export class HabitsServiceService {
       return habit
   }   
 
-  createHabit(habit) {
-    return this.habitsImplimentations.createHabit(habit);
+ async createHabit(habit) {
+    const habite = await this.habitsImplimentations.createHabit(habit);
+    return await this.getHabitCreator(habite)
   }
 async getAllHabitsForAdmin() {
     const habits = await this.habitsImplimentations.getAllHabitsForAdmin();
-    
+
     const plainHabits = habits.map(habit => habit.toObject()); 
 
   await Promise.all(plainHabits.map(async (habit) => {
@@ -40,7 +41,8 @@ async getAllHabitsForAdmin() {
    return this.habitsImplimentations.getHabitById(id)
   }
   async reactiveHabit(id:string){
-    return await this.habitsImplimentations.reactiveHabit(id)
+    const habit =  await this.habitsImplimentations.reactiveHabit(id)
+    return await this.getHabitCreator(habit)
   }
 
    async updateProgressByFrequency(frequency: string) {
@@ -64,6 +66,10 @@ async getAllHabitsForAdmin() {
         console.log(`Progress updated for habit: ${habit.title} (${frequency})`);
       }
     }
+  }
+
+ async  deletHabit (id:string){
+  return this.habitsImplimentations.deleteHabit(id)
   }
 
   

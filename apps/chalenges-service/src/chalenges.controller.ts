@@ -44,7 +44,8 @@ export class ChalengesController {
   @Delete('/:id')
   @UseGuards(AuthguardGuard)
   deleteChalenge(@Req() req,@Param('id') id){
-    
+
+    return this.chalengesService.deleteChalenge(id)
   }
 
   

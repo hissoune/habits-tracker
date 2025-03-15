@@ -11,6 +11,6 @@ export interface chalengeService {
     updateChalengesProgressByFrequency(freauency:string): Promise<Challenge[]>;
     createChalenge(chalenge:CreateChalengeDto):Promise<Challenge>;
     updateChalenge(id:string,chalenge:UpdateChalengeDto):Promise<Challenge>;
-    deleteChalenge(id:string,userId:string):Promise<Challenge>;
+    deleteChalenge(id:string):Promise<Challenge>;
     
 }

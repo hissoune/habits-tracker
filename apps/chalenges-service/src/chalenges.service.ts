@@ -70,6 +70,7 @@ export class ChalengesService {
   }
  async createChalenge(challenge:CreateChalengeDto):Promise<Challenge> {
     const chalenge =await this.chalengeServiceImplimentation.createChalenge(challenge);
+   
     return await this.getCreatrorAndParticipants(chalenge)
   }
 
@@ -77,8 +78,8 @@ export class ChalengesService {
     const chalenge =await this.chalengeServiceImplimentation.updateChalenge(id, challenge)
     return await this.getCreatrorAndParticipants(chalenge)
   }
-  deleteChalenge(id:string,userId:string){
-    return this.chalengeServiceImplimentation.deleteChalenge(id, userId)
+  deleteChalenge(id:string){
+    return this.chalengeServiceImplimentation.deleteChalenge(id)
   }
  async updateChalengesProgressByFrequency(frequency:string){
    const challenges:Challenge[] =  await this.chalengeServiceImplimentation.updateChalengesProgressByFrequency(frequency)
