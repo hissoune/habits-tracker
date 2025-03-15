@@ -1,6 +1,7 @@
 import { CreateChalengeDto } from "../../dto/create-chalenge.dto";
 import { UpdateChalengeDto } from "../../dto/update-chalenge.dto";
 import { Challenge } from "../../schemas/chalenge.schema";
+import { Progress } from "../../schemas/progress.schema";
 import { chalengeService } from "../chalenges-service";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
@@ -9,7 +10,7 @@ import { Model } from "mongoose";
 @Injectable()
 export class ChalengeServiceImplimentation implements chalengeService {
     constructor(
-        @InjectModel(Challenge.name) private readonly challengeModel: Model<Challenge>
+        @InjectModel(Challenge.name) private readonly challengeModel: Model<Challenge>,@InjectModel(Progress.name) private readonly ProgressModel: Model<Progress>
     ) {}
     
     async getAllChalenges(): Promise<Challenge[]> {
@@ -80,14 +81,8 @@ export class ChalengeServiceImplimentation implements chalengeService {
          
         return await this.challengeModel.findByIdAndUpdate(id, chalenge, { new: true }).exec();
     }
-    async deleteChalenge(id: string, userId: string): Promise<Challenge> {
-        const chalenge = await this.challengeModel.findById(id)
-        if (chalenge.creator != userId) {
-            throw new UnauthorizedException('this chalenge is not yours')
-        }
-
-        chalenge.deleteOne()
-        return chalenge.save()
+    async deleteChalenge(id: string): Promise<Challenge> {
+      return this.challengeModel.findByIdAndDelete(id)
        
     }
 }
