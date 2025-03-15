@@ -34,8 +34,16 @@ export class HabitsServiceImpl implements HabitsService {
           return habit
     }
 
-    async deleteHabit(id: string): Promise<boolean> {
-      return this.habitModel.findByIdAndDelete(id)
+    async deleteHabit(id: string): Promise<Habit> {
+        const habit = await this.habitModel.findById(id)
+        if (!habit) {
+          throw new Error("Habit not found")
+        }
+
+        await this.habitProgressModel.deleteMany({ habitId: id })
+        
+
+        return await this.habitModel.findByIdAndDelete(id)
     }
 
     async getAllHabits(userId:string): Promise<Habit[]> {
