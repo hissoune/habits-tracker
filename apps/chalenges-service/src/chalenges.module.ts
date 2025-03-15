@@ -12,6 +12,7 @@ import { ProgressModule } from './chalengesProgress/progress.module';
 import { CronService } from './cronJobs/cron.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { chalengesGateway } from './gateway/chalenges.gateway';
+import { Progress, progressSchema } from './schemas/progress.schema';
 @Module({
 
   imports: [
@@ -21,7 +22,7 @@ import { chalengesGateway } from './gateway/chalenges.gateway';
       load: [chalengeConfig], 
     }),
 
-    MongooseModule.forFeature([{ name: Challenge.name, schema: ChallengeSchema }]),
+    MongooseModule.forFeature([{ name: Challenge.name, schema: ChallengeSchema },{ name: Progress.name, schema: progressSchema }]),
 
     MongooseModule.forRootAsync({
               imports: [ConfigModule],
