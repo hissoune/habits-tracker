@@ -6,9 +6,8 @@ export interface HabitsService {
     getHabitById(id: string): Promise<Habit | null>;
     updateHabit(id: string, habit: Partial<Habit>): Promise<Habit | null>;
     reactiveHabit(id:string): Promise<Habit | null>;
-    deleteHabit(id: string): Promise<boolean>;
+    deleteHabit(id: string): Promise<Habit>;
     getAllHabits(userId:string): Promise<Habit[]>;
     getAllHabitsForAdmin(): Promise<Habit[]>;
     getHabitsByFrequency(frequency: string):Promise<Habit[]>;
-
 }
