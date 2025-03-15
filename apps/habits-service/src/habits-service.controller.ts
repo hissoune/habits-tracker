@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { HabitsServiceService } from './habits-service.service';
 import { AuthguardGuard } from './authguard/authguard.guard';
 import { CreateHabitDto } from './dto/create-habit.dto';
@@ -47,10 +47,17 @@ export class HabitsController {
 
 
   @Patch('/:habitId')
+  @UseGuards(AuthguardGuard)
   async reactiveHabit(@Param('habitId') habitId: string) {
     const habit = await this.habitsService.reactiveHabit(habitId);
     return habit
 
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthguardGuard)
+  async deleteHabit(@Param('id') id: string){
+   return await this.habitsService.deletHabit(id)
   }
 
 
