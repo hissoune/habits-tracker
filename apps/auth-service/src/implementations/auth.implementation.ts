@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { User } from '../schemas/user.schema';
 import { AuthInterface } from "../interfaces/auth.interface";
 import { JwtService } from '@nestjs/jwt';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { comparPassword, hashPassword } from '../helpers/password.helper';
 import { MailerService } from '@nestjs-modules/mailer';
 
@@ -35,6 +35,25 @@ export class AuthImplementation implements AuthInterface {
   async getUserById(userId:string): Promise<User>{
     const user= this.userModel.findById(userId);
     return user;
+  }
+
+  async banOrUnban(id:string): Promise<User>{
+
+    const user = await this.userModel.findById(id);
+  
+    if (!user) {
+      throw new NotFoundException('user doesnt exist ')
+    }
+
+    if ( user.isBaned) {
+      user.isBaned = false
+    }else {
+      user.isBaned = true
+
+    }
+
+    return user.save()
+
   }
 
   async login(userEntity: {email:string,password:string}): Promise<{ token: string ,user:User}> {

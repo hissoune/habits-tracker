@@ -9,6 +9,6 @@ export interface AuthInterface {
     login(user: User): Promise<{ token: string }>;
     getUsers(id: string): Promise<Partial<User>[]>
     forgotPassword(email: string): Promise<{ email: string }>;
-
+     banOrUnban(id: string): Promise<User>
     resetPassword(resetToken: string, newPassword: string): Promise<{ message: string }>;
 }

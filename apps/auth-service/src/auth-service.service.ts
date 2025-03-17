@@ -23,6 +23,10 @@ getUserById(userId:string){
 
 }
 
+banOrUnban(id:string){
+  return this.authImplimentations.banOrUnban(id)
+}
+
 login(data:{email:string,password:string}){
     return this.authImplimentations.login(data)
 }

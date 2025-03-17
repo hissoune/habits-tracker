@@ -3,6 +3,7 @@ import { HabitsService } from '../habits-service';
 import {  Habit } from '../../schemas/habit.schema';
 import mongoose, { Model } from 'mongoose';
 import { HabitProgress } from '../../schemas/habitProgress.schema';
+import { NotFoundException } from '@nestjs/common';
 
 export class HabitsServiceImpl implements HabitsService {
   
@@ -37,7 +38,7 @@ export class HabitsServiceImpl implements HabitsService {
     async deleteHabit(id: string): Promise<Habit> {
         const habit = await this.habitModel.findById(id)
         if (!habit) {
-          throw new Error("Habit not found")
+          throw new NotFoundException("Habit not found")
         }
 
         await this.habitProgressModel.deleteMany({ habitId: id })

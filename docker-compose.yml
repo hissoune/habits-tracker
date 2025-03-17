@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  consul:
+    image: consul:1.15
+    ports:
+      - "8500:8500"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://consul:8500/v1/status/leader"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  gateway-service:
+    build:
+      context: .
+      dockerfile: ./apps/habits-tracker-gatway/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - SERVICE_NAME=gateway-service
+      - PORT=5000
+      - SERVICE_ADDRESS=gateway-service
+      - FRONTEND_URL=http://localhost:3000
+    depends_on:
+      consul:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: ./apps/auth-service/Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - RABBITMQ_URL=amqp://rabbitmq:5672/
+      - PORT=3002
+      - SERVICE_ADDRESS=auth-service
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  challenges-service:
+    build:
+      context: .
+      dockerfile: ./apps/chalenges-service/Dockerfile
+    ports:
+      - "3003:3003"
+    environment:
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - RABBITMQ_URL=amqp://rabbitmq:5672/
+      - PORT=3003
+      - SERVICE_ADDRESS=chalenges-service
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  habits-service:
+    build:
+      context: .
+      dockerfile: ./apps/habits-service/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - RABBITMQ_URL=amqp://rabbitmq:5672/
+      - PORT=3001
+      - SERVICE_ADDRESS=habits-service
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
