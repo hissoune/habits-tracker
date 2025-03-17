@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AuthServiceService } from './auth-service.service';
 import { Date } from 'mongoose';
 import { User } from './schemas/user.schema';
 import { AuthguardGuard } from './authguard/authguard.guard';
+import { Roles } from './authguard/roles.decorator';
 
 @Controller('auth')
 export class AuthServiceController {
@@ -45,6 +46,15 @@ export class AuthServiceController {
     getAllUsers(@Req() req){
       const id = req.user.id 
    return this.authService.getAllUsers(id)
+    }
+
+    @Patch('/userActivity/:id')
+    @UseGuards(AuthguardGuard)
+    @Roles('admin')
+    banOrUnban(@Param('id') id ){
+     
+      
+        return this.authService.banOrUnban(id)
     }
 
     @MessagePattern('verify')
