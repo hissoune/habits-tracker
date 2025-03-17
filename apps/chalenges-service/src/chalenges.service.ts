@@ -13,7 +13,7 @@ export class ChalengesService {
   constructor(private readonly chalengeServiceImplimentation:ChalengeServiceImplimentation,private readonly progressService:ProgressService,@Inject("AUTH_SERVICE") private readonly authClient:ClientProxy,private readonly chalengeGateway:chalengesGateway){}
 
   async getCreatrorAndParticipants(challenge:any){
-    let chalenge = challenge.toObject()
+    const chalenge = challenge.toObject ? challenge.toObject() : challenge;
     const creator = await this.authClient.send('get-creator', chalenge.creator).toPromise();
    
     if (chalenge.participants && chalenge.participants.length > 0) {
