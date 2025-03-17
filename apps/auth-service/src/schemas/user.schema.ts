@@ -13,9 +13,9 @@ export class User extends Document {
     @Prop({ required: true })
     password: string;
 
-    @Prop({ required: true })
+    @Prop({ type:Date, required: true })
     birthDay: Date;
-    
+
     @Prop({required:true,default:false})
     isBaned:boolean
 

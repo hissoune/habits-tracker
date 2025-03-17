@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { AuthImplementation } from './implementations/auth.implementation';
 import { User } from './schemas/user.schema';
 
