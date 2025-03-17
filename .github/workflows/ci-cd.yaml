@@ -1,0 +1,37 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - 'MYH-25-Implement-habit-progress-tracking-e.g.-marking-habits-as-completed'
+  pull_request:
+    branches:
+      - main
+      - 'MYH-25-Implement-habit-progress-tracking-e.g.-marking-habits-as-completed'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js and pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8 # Use the latest pnpm version
+          run_install: false # Prevent auto-install to control the process
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm test
