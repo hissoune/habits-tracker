@@ -15,6 +15,9 @@ export class User extends Document {
 
     @Prop({ required: true })
     birthDay: Date;
+    
+    @Prop({required:true,default:false})
+    isBaned:boolean
 
     @Prop({ required: true })
     image: string;
