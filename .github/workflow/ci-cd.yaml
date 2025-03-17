@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+      - MYH-25-Implement-habit-progress-tracking-e.g.-marking-habits-as-completed
 
 jobs:
   test:
