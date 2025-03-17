@@ -1,0 +1,38 @@
+FROM node:18
+
+WORKDIR /usr/src/app
+
+# Copy lockfile and main configs first
+COPY pnpm-lock.yaml package.json tsconfig.json ./
+
+# Install PNPM globally
+RUN npm install -g pnpm
+
+# Fix the PNPM symlink issue
+RUN pnpm config set node-linker=hoisted
+
+# Install all dependencies
+RUN pnpm install
+
+# Copy everything in the monorepo
+COPY . .
+
+# Install the dependencies only for the habits service
+RUN pnpm install --filter=habits-service
+
+# Build the habits service
+RUN pnpm run --filter=habits-service build
+
+# Expose the port
+EXPOSE ${PORT:-3001}
+
+# Environment variables
+ENV NODE_ENV=production
+ENV CONSUL_HOST=consul
+ENV CONSUL_PORT=8500
+ENV RABBITMQ_URL=amqp://rabbitmq:5672/
+ENV SERVICE_ADDRESS=habits-service
+ENV PORT=3001
+
+# Run the service
+CMD ["pnpm", "run", "start:prod"]
