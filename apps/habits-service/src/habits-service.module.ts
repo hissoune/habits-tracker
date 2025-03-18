@@ -47,6 +47,19 @@ import { CronService } from './cronJobs/cron.service';
                 }
               }
             ]),
+            ClientsModule.register([
+              {
+                name:"NOTIFICATIONS_SERVICE",
+                transport:Transport.RMQ,
+                options:{
+                  urls:["amqp://localhost:5672/"],
+                  queue:"notifications_queue",
+                  queueOptions: {
+                    durable: false,
+                  },
+                }
+              }
+            ]),
             
 
   ],
