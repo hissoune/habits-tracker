@@ -47,6 +47,19 @@ import { Progress, progressSchema } from './schemas/progress.schema';
                     }
                   }
                 ]),
+                ClientsModule.register([
+                  {
+                    name:"NOTIFICATIONS_SERVICE",
+                    transport:Transport.RMQ,
+                    options:{
+                      urls:["amqp://localhost:5672/"],
+                      queue:"notifications_queue",
+                      queueOptions: {
+                        durable: false,
+                      },
+                    }
+                  }
+                ]),
                 ProgressModule
 
   ],
