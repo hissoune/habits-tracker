@@ -4,15 +4,16 @@ import { ChalengeServiceImplimentation } from './buisness/impl/chalenge-service.
 import { ProgressService } from './chalengesProgress/progress.service';
 import { ClientProxy } from '@nestjs/microservices';
 import { chalengesGateway } from './gateway/chalenges.gateway';
-import { Challenge } from './schemas/chalenge.schema';
 import { CreateChalengeDto } from './dto/create-chalenge.dto';
 import { UpdateChalengeDto } from './dto/update-chalenge.dto';
+import { emit } from 'process';
 
 describe('ChalengesService', () => {
   let service: ChalengesService;
   let chalengeServiceImplimentation: ChalengeServiceImplimentation;
   let progressService: ProgressService;
   let authClient: ClientProxy;
+  let notificationsClient: ClientProxy;
   let chalengeGateway: chalengesGateway;
 
   beforeEach(async () => {
@@ -47,6 +48,12 @@ describe('ChalengesService', () => {
           },
         },
         {
+            provide: 'NOTIFICATIONS_SERVICE',
+            useValue: {
+              emit: jest.fn(),
+            },
+          },
+        {
           provide: chalengesGateway,
           useValue: {
             emitchalengeUpdate: jest.fn(),
@@ -59,6 +66,7 @@ describe('ChalengesService', () => {
     chalengeServiceImplimentation = module.get<ChalengeServiceImplimentation>(ChalengeServiceImplimentation);
     progressService = module.get<ProgressService>(ProgressService);
     authClient = module.get<ClientProxy>('AUTH_SERVICE');
+    notificationsClient = module.get<ClientProxy>('NOTIFICATIONS_SERVICE');
     chalengeGateway = module.get<chalengesGateway>(chalengesGateway);
   });
 
