@@ -10,7 +10,7 @@ import { chalengesGateway } from './gateway/chalenges.gateway';
 
 @Injectable()
 export class ChalengesService {
-  constructor(private readonly chalengeServiceImplimentation:ChalengeServiceImplimentation,private readonly progressService:ProgressService,@Inject("AUTH_SERVICE") private readonly authClient:ClientProxy,private readonly chalengeGateway:chalengesGateway){}
+  constructor(private readonly chalengeServiceImplimentation:ChalengeServiceImplimentation,private readonly progressService:ProgressService,@Inject("AUTH_SERVICE") private readonly authClient:ClientProxy,private readonly chalengeGateway:chalengesGateway,@Inject('NOTIFICATIONS_SERVICE') private readonly notificationsClient:ClientProxy){}
 
   async getCreatrorAndParticipants(challenge:any){
     const chalenge = challenge.toObject ? challenge.toObject() : challenge;
@@ -98,6 +98,13 @@ export class ChalengesService {
           }else {
           const data =   await this.progressService.updateProgress( participant.userId as string,challenge._id as string);
           const chalenge = await this.getCreatrorAndParticipants(data)
+          this.notificationsClient.emit('chalenge_updated', {
+            userId:participant.userId,
+            chalengId:chalenge._id,
+            progress: participant.progress,
+            title: 'Challenge  Progress Updated',
+            message: `Your chalenge ${chalenge.title} is now at ${participant.progress}% progress!`
+          });
          await this.chalengeGateway.emitchalengeUpdate(chalenge)
            console.log(`Progress update for challenge: ${challenge.title} (${frequency})`);
   
