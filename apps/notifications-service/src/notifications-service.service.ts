@@ -1,34 +1,60 @@
 import { Injectable } from '@nestjs/common';
 import { NotificationGateway } from './notifications.gateway';
 import axios from 'axios';
+import { InjectModel } from '@nestjs/mongoose';
+import { PushToken } from './schemas/notificationsPushToken';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class NotificationsServiceService {
   private EXPO_PUSH_URL = 'https://exp.host/--/api/v2/push/send';
-  private userPushTokens = new Map<string, string>();
-  constructor(private notificationGateway: NotificationGateway) {}
 
-  async saveUserPushToken(userId: string, pushToken: string) {
-    this.userPushTokens.set(userId, pushToken);
-    console.log(`Stored token for user ${userId}: ${pushToken}`);
-    return { success: true, message: 'Push token saved successfully' };
+  constructor(private notificationGateway: NotificationGateway, @InjectModel(PushToken.name) private pushTokenModel: Model<PushToken>,
+) {}
+
+async saveUserPushToken(userId: string, pushToken: string) {
+  await this.pushTokenModel.findOneAndUpdate(
+    { userId },
+    { pushToken },
+    { upsert: true, new: true }
+  );
+
+  console.log(`Stored token for user ${userId}: ${pushToken}`);
+  return { success: true, message: 'Push token saved successfully' };
+}
+
+async sendNotification(pushToken: string, title: string, body: string) {
+
+
+
+  if (!pushToken.startsWith('ExponentPushToken')) {
+    throw new Error('Invalid notification token');
   }
 
-  async sendNotification(pushToken: string, title: string, body: string) {
-    if (!pushToken.startsWith('ExponentPushToken')) {
-      throw new Error('Token de notification invalide');
-    }
+  console.log('push tokeb befor sending the req ',pushToken);
+  
+  const message = {
+    to: pushToken,
+    sound: 'default',
+    title: title,
+    body: body,
+    data: { extraData: 'Some extra data' }, 
+  };
+  
+  const response = await axios.post(this.EXPO_PUSH_URL, message,{
+    headers: {
+      "Content-Type": "application/json",
+  },
+  });
+  console.log("Expo Push Response:", response.data);
+  this.notificationGateway.sendNotificationToClient({ title, message: body });
 
-    const message = { to: pushToken, sound: 'default', title, body };
+  return { success: true, message: 'Notification sent!' };
+}
 
-    await axios.post(this.EXPO_PUSH_URL, message);
 
-    this.notificationGateway.sendNotificationToClient({ title, message: body });
-
-    return { success: true, message: 'Notification envoyée !' };
-  }
-
-  async getUserPushToken(userId: string) {
-    return this.userPushTokens.get(userId) || null;
-  }
+async getUserPushToken(userId: string) {
+  const userPushToken = await this.pushTokenModel.findOne({ userId });
+  return userPushToken ? userPushToken.pushToken : null;
+}
 }
