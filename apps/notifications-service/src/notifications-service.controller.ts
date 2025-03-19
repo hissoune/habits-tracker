@@ -12,6 +12,7 @@ checkHealth(){
 
 @Post('token')
 async storePushToken(@Body() body: { userId: string; pushToken: string }) {
+  
   return this.notificationsServiceService.saveUserPushToken(body.userId, body.pushToken);
 }
 
@@ -24,7 +25,9 @@ async storePushToken(@Body() body: { userId: string; pushToken: string }) {
   async handleHabitUpdate(@Payload() data: { userId: string; habitId: string; progress: number; title: string; message: string }) {
     console.log('🔥 Received habit update event:', data);
 
-    const userPushToken = await this.notificationsServiceService.getUserPushToken(data.userId);
+    const userPushToken = await this.notificationsServiceService.getUserPushToken(data?.userId);
+    console.log('the push token ',userPushToken);
+    
 
     if (userPushToken) {
       await this.notificationsServiceService.sendNotification(userPushToken, data.title, data.message);
@@ -38,7 +41,8 @@ async storePushToken(@Body() body: { userId: string; pushToken: string }) {
   async handleChalengeUpdate(@Payload() data: { userId: string; chalengeTitle: string; progress: number; title: string; message: string }) {
     console.log('🔥 Received chalenge update event:', data);
 
-    const userPushToken = await this.notificationsServiceService.getUserPushToken(data.userId);
+    const userPushToken = await this.notificationsServiceService.getUserPushToken(data?.userId);
+    console.log('the push token ',userPushToken);
 
     if (userPushToken) {
       await this.notificationsServiceService.sendNotification(userPushToken, data.title, data.message);
