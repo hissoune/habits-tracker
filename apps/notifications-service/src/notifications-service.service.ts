@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { NotificationGateway } from './notifications.gateway';
 import axios from 'axios';
 import { InjectModel } from '@nestjs/mongoose';
 import { PushToken } from './schemas/notificationsPushToken';
@@ -9,7 +8,7 @@ import { Model } from 'mongoose';
 export class NotificationsServiceService {
   private EXPO_PUSH_URL = 'https://exp.host/--/api/v2/push/send';
 
-  constructor(private notificationGateway: NotificationGateway, @InjectModel(PushToken.name) private pushTokenModel: Model<PushToken>,
+  constructor( @InjectModel(PushToken.name) private pushTokenModel: Model<PushToken>,
 ) {}
 
 async saveUserPushToken(userId: string, pushToken: string) {
@@ -47,8 +46,7 @@ async sendNotification(pushToken: string, title: string, body: string) {
   },
   });
   console.log("Expo Push Response:", response.data);
-  this.notificationGateway.sendNotificationToClient({ title, message: body });
-
+ 
   return { success: true, message: 'Notification sent!' };
 }
 
