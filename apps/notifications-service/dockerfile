@@ -1,0 +1,28 @@
+FROM node:18
+
+WORKDIR /usr/src/app
+
+COPY pnpm-lock.yaml package.json tsconfig.json ./
+
+RUN npm install -g pnpm
+
+RUN pnpm config set node-linker=hoisted
+
+RUN pnpm install
+
+COPY . .
+
+RUN pnpm install --filter=notifications-service
+
+RUN pnpm run --filter=notifications-service build
+
+EXPOSE ${PORT:-3006}
+
+ENV NODE_ENV=production
+ENV CONSUL_HOST=consul
+ENV CONSUL_PORT=8500
+ENV RABBITMQ_URL=amqp://rabbitmq:5672/
+ENV SERVICE_ADDRESS=notifications-service
+ENV PORT=3006
+
+CMD ["pnpm", "run", "start:prod"]
