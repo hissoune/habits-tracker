@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { NotificationsServiceController } from './notifications-service.controller';
 import { NotificationsServiceService } from './notifications-service.service';
-import { NotificationGateway } from './notifications.gateway';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PushToken, PushTokenSchema } from './schemas/notificationsPushToken';
@@ -25,6 +24,6 @@ import notificationConfig from './config/config'
              }),
   ],
   controllers: [NotificationsServiceController],
-  providers: [NotificationsServiceService,NotificationGateway],
+  providers: [NotificationsServiceService],
 })
 export class NotificationsServiceModule {}
