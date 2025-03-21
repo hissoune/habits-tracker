@@ -13,6 +13,9 @@ The **Habits Tracker App** is a distributed microservices-based application desi
    - [Gateway Service](#gateway-service)
    - [Auth Service](#auth-service)
    - [Habits Service](#habits-service)
+   - [Challenges Service](#chalenges-service)
+   - [Notifications Service](#notifications-service)
+   - [Chat Service](#chat-service)
 3. [Setup and Installation](#setup-and-installation)
 4. [Running the Application](#running-the-application)
 5. [Environment Variables](#environment-variables)
@@ -29,7 +32,9 @@ The Habits Tracker App is composed of the following:
 - **Gateway Service:** The entry point for client requests. Handles routing and communication with other services.
 - **Auth Service:** Responsible for user authentication and authorization using JWT.
 - **Habits Service:** Manages habit-related functionalities such as creating, updating, and deleting habits.
-
+- **Challenges Service:** Manages chalenges-related functionalities such as creating, updating, and deleting ,joining chalenges.
+- **Notifications Service:** this service is the responsible of sending the notifications to the user .
+ 
 ### Communication
 
 - **Message Broker:** RabbitMQ is used for asynchronous communication between services.
@@ -44,7 +49,7 @@ The Habits Tracker App is composed of the following:
 
 - **Path:** `apps/habits-tracker-gateway`
 - **Description:** Serves as the API gateway. Routes requests to the respective microservices.
-- **Port:** `3000`
+- **Port:** `5000`
 
 ### Auth Service
 
@@ -57,6 +62,14 @@ The Habits Tracker App is composed of the following:
 - **Path:** `apps/habits-service`
 - **Description:** Manages habits, including CRUD operations for user habits.
 - **Port:** `3002`
+
+- **Path:** `apps/chalenges-service`
+- **Description:** Manages chalenges, including CRUD operations for user chalenges .
+- **Port:** `3003`
+
+- **Path:** `apps/notifications-service`
+- **Description:** send notifications to the client  .
+- **Port:** `3006`
 
 ---
 
@@ -73,7 +86,7 @@ The Habits Tracker App is composed of the following:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-repo/habits-tracker.git
+   git clone https://github.com/hissoune/habits-tracker.git
    cd habits-tracker
    ```
 
@@ -121,37 +134,24 @@ Each service has its own `.env` file located in its respective folder. Below is 
 ### Gateway Service (`apps/habits-tracker-gateway/.env`)
 
 ```
-PORT=3000
-JWT_SECRET=your_secret_key
-RABBITMQ_URL=amqp://localhost
+JWT_SECRET=your_secret
+MONGO_URI_AUTH=mongodb://127.0.0.1:27017/yourDbAuth
+MONGO_URI_HABITS=mongodb://127.0.0.1:27017/habitsDb
+MONGO_URI_CHALENGES=mongodb://127.0.0.1:27017/chalengesDb
+MONGO_URI_NOTIFICATIONS=mongodb://127.0.0.1:27017/notificationsDb
+APP_EMAIL=your email
+APP_EMAIL_PASS=your password 
 ```
 
-### Auth Service (`apps/auth-service/.env`)
-
-```
-PORT=3001
-JWT_SECRET=your_secret_key
-RABBITMQ_URL=amqp://localhost
-```
-
-### Habits Service (`apps/habits-service/.env`)
-
-```
-PORT=3002
-RABBITMQ_URL=amqp://localhost
-```
-
----
 
 ## API Endpoints
 
 ### Gateway Service
 
-| Method | Endpoint         | Description          |
-| ------ | ---------------- | -------------------- |
-| POST   | `/auth/login`    | Log in a user        |
-| POST   | `/auth/register` | Register a new user  |
-| GET    | `/habits`        | Retrieve user habits |
+| Method | Endpoint         |  Description                  |
+| ------ | ---------------- | -----------------------------|
+| *      | `*`              |  dispatch to other services   |
+
 
 ### Auth Service
 
