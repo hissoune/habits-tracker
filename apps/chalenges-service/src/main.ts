@@ -1,35 +1,41 @@
-import { NestFactory } from '@nestjs/core';
-import { ChalengesModule } from './chalenges.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-const Consul = require('consul');
+import { NestFactory } from "@nestjs/core"
+import { ChalengesModule } from "./chalenges.module"
+import { type MicroserviceOptions, Transport } from "@nestjs/microservices"
+const Consul = require("consul")
 
 async function bootstrap() {
-  const app = await NestFactory.create(ChalengesModule);
+  const app = await NestFactory.create(ChalengesModule)
   const microcervice = await NestFactory.createMicroservice<MicroserviceOptions>(ChalengesModule, {
-      transport: Transport.RMQ,
-      options: {
-        urls: ["amqp://localhost:5672/"],
-        queue: 'chalenge_queue',
-        queueOptions: {
-          durable: false,
-        },
+    transport: Transport.RMQ,
+    options: {
+      urls: [process.env.RABBITMQ_URL || "amqp://localhost:5672/"],
+      queue: "chalenge_queue",
+      queueOptions: {
+        durable: false,
       },
-    });
-  await microcervice.listen();
-  const consul = new Consul();
-  const serviceName = 'chalenges-service';
-  const port = 3003; 
+    },
+  })
+  await microcervice.listen()
+
+  // Log the Consul host and port for debugging
+  console.log(`Connecting to Consul at ${process.env.CONSUL_HOST || "localhost"}:${process.env.CONSUL_PORT || "8500"}`)
+
+  const consul = new Consul()
+
+  const serviceName = "chalenges-service"
+  const port = 3003
 
   await consul.agent.service.register({
     name: serviceName,
-    address: 'localhost',
+    address: process.env.SERVICE_ADDRESS || "chalenges-service", // Use the service name
     port: port,
     check: {
-      http: `http://localhost:3003/chalenges/health`, 
-      interval: '10s',         
+      http: `http://${process.env.SERVICE_ADDRESS || "localhost"}:${port}/chalenges/health`, // Use the service name
+      interval: "10s",
     },
-  });
-  console.log(`✅ Registered ${serviceName} in Consul`);
-  await app.listen(port);
+  })
+  console.log(`✅ Registered ${serviceName} in Consul`)
+  await app.listen(port)
 }
-bootstrap();
+bootstrap()
+
