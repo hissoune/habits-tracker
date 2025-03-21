@@ -1,46 +1,32 @@
-# Stage 1: Install dependencies
 FROM node:18 AS builder
+
 WORKDIR /usr/src/app
 
-# Copy lockfile and main configs first
-COPY pnpm-lock.yaml package.json tsconfig.json ./
-
-# Install PNPM globally
 RUN npm install -g pnpm
-
-# Fix the PNPM symlink issue
 RUN pnpm config set node-linker=hoisted
 
-# Install all dependencies
+COPY pnpm-lock.yaml package.json tsconfig.json ./
 RUN pnpm install
 
-# Copy everything in the monorepo
-COPY . .
-
-# Install only for the gateway service
+COPY . . 
 RUN pnpm install --filter=habits-tracker-gateway
-
-# Build the service
 RUN pnpm run --filter=habits-tracker-gateway build
 
-# Stage 2: Create the final image
 FROM node:18
+
 WORKDIR /usr/src/app
 
-# Copy built files from the builder stage
-COPY --from=builder /usr/src/app .
+RUN npm install -g pnpm
 
-# Expose the port
+COPY --from=builder /usr/src/app ./ 
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+
+WORKDIR /usr/src/app/apps/habits-tracker-gateway
+
 EXPOSE 5000
 
-# Environment variables
 ENV NODE_ENV=production
-ENV CONSUL_HOST=consul
-ENV CONSUL_PORT=8500
-ENV SERVICE_NAME=gateway-service
 ENV PORT=5000
-ENV SERVICE_ADDRESS=gateway-service
-ENV FRONTEND_URL=http://localhost:3000
+ENV SERVICE_NAME=gateway-service
 
-# Run the service
 CMD ["pnpm", "run", "start:dev"]

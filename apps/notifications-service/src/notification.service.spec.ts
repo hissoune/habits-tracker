@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotificationsServiceService } from './notifications-service.service';
-import { NotificationGateway } from './notifications.gateway';
 import { getModelToken } from '@nestjs/mongoose';
 import { PushToken } from './schemas/notificationsPushToken';
 import { Model } from 'mongoose';
@@ -9,7 +8,6 @@ import MockAdapter from 'axios-mock-adapter';
 
 describe('NotificationsServiceService', () => {
   let service: NotificationsServiceService;
-  let notificationGateway: NotificationGateway;
   let pushTokenModel: Model<PushToken>;
   let axiosMock: MockAdapter;
 
@@ -17,12 +15,7 @@ describe('NotificationsServiceService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         NotificationsServiceService,
-        {
-          provide: NotificationGateway,
-          useValue: {
-            sendNotificationToClient: jest.fn(),
-          },
-        },
+     
         {
           provide: getModelToken(PushToken.name),
           useValue: {
@@ -34,7 +27,6 @@ describe('NotificationsServiceService', () => {
     }).compile();
 
     service = module.get<NotificationsServiceService>(NotificationsServiceService);
-    notificationGateway = module.get<NotificationGateway>(NotificationGateway);
     pushTokenModel = module.get<Model<PushToken>>(getModelToken(PushToken.name));
 
     axiosMock = new MockAdapter(axios);
@@ -95,10 +87,7 @@ describe('NotificationsServiceService', () => {
           data: { extraData: 'Some extra data' },
         }),
       );
-      expect(notificationGateway.sendNotificationToClient).toHaveBeenCalledWith({
-        title,
-        message: body,
-      });
+     
       expect(result).toEqual({
         success: true,
         message: 'Notification sent!',

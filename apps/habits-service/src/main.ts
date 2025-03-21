@@ -1,38 +1,42 @@
-import { NestFactory } from '@nestjs/core';
-import { HabitsServiceModule } from './habits-service.module';
-const Consul = require('consul');
-import { Transport, MicroserviceOptions } from '@nestjs/microservices';
+import { NestFactory } from "@nestjs/core"
+import { HabitsServiceModule } from "./habits-service.module"
+const Consul = require("consul")
+import { Transport, type MicroserviceOptions } from "@nestjs/microservices"
 
 async function bootstrap() {
-    const app = await NestFactory.create(HabitsServiceModule);
-  
+  const app = await NestFactory.create(HabitsServiceModule)
+
   const microcervice = await NestFactory.createMicroservice<MicroserviceOptions>(HabitsServiceModule, {
     transport: Transport.RMQ,
     options: {
-      urls: ["amqp://localhost:5672/"],
-      queue: 'habit_queue',
+      urls: [process.env.RABBITMQ_URL || "amqp://localhost:5672/"],
+      queue: "habit_queue",
       queueOptions: {
         durable: false,
       },
     },
-  });
-await microcervice.listen();
+  })
+  await microcervice.listen()
 
-  const consul = new Consul();
-  const serviceName = 'habits-service';
-  const port = 3001; 
+  console.log(`Connecting to Consul at ${process.env.CONSUL_HOST || "localhost"}:${process.env.CONSUL_PORT || "8500"}`)
+
+  const consul = new Consul()
+
+  const serviceName = "habits-service"
+  const port = 3001
 
   await consul.agent.service.register({
     name: serviceName,
-    address: 'localhost',
+    address: process.env.SERVICE_ADDRESS || "habits-service", 
     port: port,
     check: {
-      http: `http://127.0.0.1:3001/habits/health`, 
-      interval: '10s',         
+      http: `http://${process.env.SERVICE_ADDRESS || "localhost"}:${port}/habits/health`, 
+      interval: "10s",
     },
-  });
-  console.log(`✅ Registered ${serviceName} in Consul`);
+  })
+  console.log(`✅ Registered ${serviceName} in Consul`)
 
-  await app.listen(port);
+  await app.listen(port)
 }
-bootstrap();
+bootstrap()
+
