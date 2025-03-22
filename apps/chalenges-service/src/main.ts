@@ -26,7 +26,7 @@ async function bootstrap() {
 
   await consul.agent.service.register({
     name: serviceName,
-    address: process.env.SERVICE_ADDRESS || "chalenges-service", 
+    address: process.env.SERVICE_ADDRESS || "localhost", 
     port: port,
     check: {
       http: `http://${process.env.SERVICE_ADDRESS || "localhost"}:${port}/chalenges/health`, 
