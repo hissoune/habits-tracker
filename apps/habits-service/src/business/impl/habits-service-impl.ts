@@ -1,7 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { HabitsService } from '../habits-service';
-import {  Habit } from '../../schemas/habit.schema';
-import mongoose, { Model } from 'mongoose';
+import { Habit } from '../../schemas/habit.schema';
+import { Model } from 'mongoose';
 import { HabitProgress } from '../../schemas/habitProgress.schema';
 import { NotFoundException } from '@nestjs/common';
 

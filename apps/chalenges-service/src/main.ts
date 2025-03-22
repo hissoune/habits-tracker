@@ -17,7 +17,6 @@ async function bootstrap() {
   })
   await microcervice.listen()
 
-  // Log the Consul host and port for debugging
   console.log(`Connecting to Consul at ${process.env.CONSUL_HOST || "localhost"}:${process.env.CONSUL_PORT || "8500"}`)
 
   const consul = new Consul()
@@ -27,10 +26,10 @@ async function bootstrap() {
 
   await consul.agent.service.register({
     name: serviceName,
-    address: process.env.SERVICE_ADDRESS || "chalenges-service", // Use the service name
+    address: process.env.SERVICE_ADDRESS || "localhost", 
     port: port,
     check: {
-      http: `http://${process.env.SERVICE_ADDRESS || "localhost"}:${port}/chalenges/health`, // Use the service name
+      http: `http://${process.env.SERVICE_ADDRESS || "localhost"}:${port}/chalenges/health`, 
       interval: "10s",
     },
   })

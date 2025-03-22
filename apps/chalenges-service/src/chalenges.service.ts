@@ -64,7 +64,9 @@ export class ChalengesService {
  async joinChalenge(id:string,userId:string):Promise<Challenge>{
     
   const chalenge =await this.chalengeServiceImplimentation.joinChalenge(id, userId)
-  return await this.getCreatrorAndParticipants(chalenge)
+  const chelengeWithdetails =  await this.getCreatrorAndParticipants(chalenge)
+  
+  return chelengeWithdetails
 
    
   }

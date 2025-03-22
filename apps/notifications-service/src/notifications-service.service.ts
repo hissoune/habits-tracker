@@ -22,6 +22,14 @@ async saveUserPushToken(userId: string, pushToken: string) {
   return { success: true, message: 'Push token saved successfully' };
 }
 
+async removePushToken (userId:string){
+  await this.pushTokenModel.findOneAndDelete(
+    { userId },
+  );
+  console.log(`Removed token for user ${userId}`);
+
+}
+
 async sendNotification(pushToken: string, title: string, body: string) {
 
 

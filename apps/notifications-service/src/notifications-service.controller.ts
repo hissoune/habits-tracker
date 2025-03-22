@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { NotificationsServiceService } from './notifications-service.service';
 import { EventPattern, Payload } from '@nestjs/microservices';
 
@@ -14,6 +14,11 @@ checkHealth(){
 async storePushToken(@Body() body: { userId: string; pushToken: string }) {
   
   return this.notificationsServiceService.saveUserPushToken(body.userId, body.pushToken);
+}
+
+@Delete('token/:userId')
+async removePushToken(@Param('userId') userId:string){
+  return this.notificationsServiceService.removePushToken(userId)
 }
 
   @EventPattern('send')
