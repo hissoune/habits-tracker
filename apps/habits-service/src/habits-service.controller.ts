@@ -3,6 +3,8 @@ import { HabitsServiceService } from './habits-service.service';
 import { AuthguardGuard } from './authguard/authguard.guard';
 import { CreateHabitDto } from './dto/create-habit.dto';
 import { Roles } from './authguard/roles.decorator';
+import { UpdateHabitDto } from './dto/update-habit.dto';
+import { Habit } from '../types';
 
 @Controller('habits')
 export class HabitsController {
@@ -60,7 +62,12 @@ export class HabitsController {
    return await this.habitsService.deletHabit(id)
   }
 
+@Patch('/updatehabit/:habitId')
+@UseGuards(AuthguardGuard)
+updateHabit(@Param('habitId') habitId: string ,@Body() habit:Partial<Habit>){
 
+    return this.habitsService.updatehabit(habitId, habit)
+}
 
 }
 
