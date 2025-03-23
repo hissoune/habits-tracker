@@ -70,6 +70,11 @@ async getAllHabitsForAdmin() {
   return this.habitsImplimentations.deleteHabit(id)
   }
 
+  async updatehabit(habitId:string,habit){
+    return this.habitsImplimentations.updateHabit(habitId, habit)
+
+  }
+
   
 
 }
