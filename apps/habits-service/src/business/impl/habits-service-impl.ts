@@ -27,7 +27,7 @@ export class HabitsServiceImpl implements HabitsService {
     }
 
     async updateHabit(id: string, habit: Partial<Habit>): Promise<Habit | null> {
-       return this.habitModel.findByIdAndUpdate(id, habit)
+       return this.habitModel.findByIdAndUpdate(id, habit,{new:true})
     }
 
    async reactiveHabit(id: string): Promise<Habit | null> {
@@ -58,6 +58,8 @@ export class HabitsServiceImpl implements HabitsService {
     async getHabitsByFrequency(frequency: string): Promise<Habit[]> {
         return this.habitModel.find({ frequency ,status:'active' });
     }
+
+    
 
   
 
