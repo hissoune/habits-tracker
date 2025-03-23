@@ -54,6 +54,10 @@ export class chalengeProgressImpl implements progressService {
 
          }else {
           progress.streak = 0;
+          const participantIndex = chalenge.participants.findIndex(p => p.userId === userId);
+          if (participantIndex !== -1) {
+              chalenge.participants[participantIndex].progress = 0;
+          }
          }
         await progress.save();
         await chalenge.save();
